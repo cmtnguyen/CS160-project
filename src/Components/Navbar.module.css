@@ -1,11 +1,15 @@
 .navColor {
-  background-color: #e5e5e5;
+  background-color: var(--main-grey);
 }
 
 .navLogo {
   font-size: 24px;
   color: var(--main-color);
   text-decoration: none;
+}
+
+.navLogo:hover {
+  color: var(--main-color);
 }
 
 .logo {
@@ -30,8 +34,12 @@
   border-radius: 10px;
 }
 
+.navBtn:hover {
+  color: var(--black);
+}
+
 .dots {
-  color: #14213d;
+  color: var(--main-color);
   padding: 0.5rem 0;
 }
 

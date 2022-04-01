@@ -1,4 +1,4 @@
-# CS160 Project 5: Traffic Monitoring
+# CS160 Project: Parking Garage Automation
 
 ## CS160 Sec 02
 

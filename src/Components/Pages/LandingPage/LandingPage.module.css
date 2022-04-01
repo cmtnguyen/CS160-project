@@ -1,4 +1,75 @@
 .header {
   color: var(--black);
+  background-color: var(--main-grey);
+  width: 100%;
+  height: 31.25vh;
+}
+.mid {
+  color: var(--black);
+  width: 100%;
+  height: 35.25vh;
+}
+.footer {
+  color: var(--black);
+  background-color: var(--main-grey);
   text-align: center;
+  width: 100%;
+  height: 27.15vh;
+}
+
+.landingHeader {
+  padding-top: 4rem;
+  font-size: 3rem;
+}
+
+.landingSub {
+  padding-top: 2.5rem;
+  font-size: 2rem;
+}
+.landingHeader:last-of-type,
+.landingSub:last-of-type {
+  padding-top: 0;
+  margin-top: 0;
+}
+
+.landingImg {
+  height: 25.5vh;
+  width: auto;
+  display: block;
+  margin: 2rem auto;
+}
+
+.footer p {
+  padding-top: 2.5rem;
+  font-size: 2.5rem;
+  font-weight: 300;
+}
+
+.cancel,
+.checkIn,
+.reserve {
+  width: 26rem;
+  color: var(--main-white);
+  display: inline-block;
+  border-radius: 25px;
+  padding: 1rem 1rem;
+  border: none;
+  font-size: 2.5rem;
+  font-weight: 300;
+}
+.reserve {
+  width: 35rem;
+}
+.cancel {
+  background-color: var(--red);
+  margin-right: 7rem;
+}
+.cancel:hover {
+  background-color: var(--dark-red);
+}
+.checkIn {
+  background-color: var(--green);
+}
+.checkIn:hover {
+  background-color: var(--dark-green);
 }
