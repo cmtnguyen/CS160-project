@@ -59,6 +59,11 @@
 }
 .reserve {
   width: 35rem;
+  background-color: var(--main-accent);
+}
+.reserve:hover {
+  background-color: var(--main-accent);
+  color: var(--black);
 }
 .cancel {
   background-color: var(--red);

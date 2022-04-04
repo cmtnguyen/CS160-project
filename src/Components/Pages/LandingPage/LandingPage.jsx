@@ -34,7 +34,7 @@ const LandingPage = () => {
                 Reserve a parking spot today with Car-eservation.
               </p>
               <p className={styles.landingSub}>Easy as 1, 2, 3!</p>
-              <Button variant="warning" className={styles.reserve}>
+              <Button href="/reserve" className={styles.reserve}>
                 Click Here to Get Started
               </Button>
             </Col>
