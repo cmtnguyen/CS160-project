@@ -27,7 +27,11 @@ const LandingPage = () => {
         <section className={styles.mid}>
           <Row className="m-0">
             <Col className="col-6">
-              <img className={styles.landingImg} src={Phone} alt="phone" />
+              <img
+                className={`${styles.landingImg} ${styles.phoneImg}`}
+                src={Phone}
+                alt="phone"
+              />
             </Col>
             <Col className="text-center">
               <p className={styles.landingSub}>
