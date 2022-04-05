@@ -9,7 +9,7 @@ const Navibar = () => {
       <Container fluid>
         <Link to="/" className={styles.navLogo}>
           <img src={logo} className={styles.logo} alt="logo" />
-          Car-Servation
+          Car-eservation
         </Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
