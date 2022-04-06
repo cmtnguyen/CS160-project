@@ -1,0 +1,17 @@
+.login {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--main-grey);
+  }
+  .loginBtn {
+    font-size: 1rem;
+    margin-top: 1rem;
+    padding: 1rem 1rem;
+    border: none;
+    color: var(--main-white);
+    background-color: #4285f4;
+  }

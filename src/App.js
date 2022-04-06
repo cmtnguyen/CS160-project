@@ -6,6 +6,7 @@ import Reserve from './Components/Pages/ReservationPage/ReservationPage';
 import CheckIn from './Components/Pages/CheckInPage/CheckInPage';
 import Report from './Components/Pages/ReportPage/ReportPage';
 import Cancel from './Components/Pages/CancelPage/CancelPage';
+import Login from './Components/Pages/LoginPage/LoginPage';
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
     <Router>
       <Routes>
         <Route exact path="/" element={<Landing />} />
+        <Route exact path="/login" element={<Login />} />
         <Route exact path="/reserve" element={<Reserve />} />
         <Route exact path="/cancel" element={<Cancel />} />
         <Route exact path="/checkIn" element={<CheckIn />} />
