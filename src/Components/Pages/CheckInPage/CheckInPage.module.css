@@ -3,7 +3,7 @@
     border-radius: 5px;
     background-color: lightgray;
     width:70%;
-    height: 100%;
+    height: max-content;
     overflow: hidden;
  }
 

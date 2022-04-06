@@ -31,7 +31,7 @@ const ReservationForm = (props) => {
     if (Object.keys(formErrors).length === 0 && isSubmit) {
       console.log(formValues);
     }
-  }, [formErrors]);
+  }, [formErrors, formValues, isSubmit]);
 
   const validate = (values) => {
     const errors = {};
@@ -75,244 +75,242 @@ const ReservationForm = (props) => {
     return errors;
   };
   return (
-    <div className={styles.reservationColor}>
-      <form onSubmit={handleSubmit}>
-        {/*Reservation Page */}
-        <Container className={styles.reservationAlign} class="reservation">
-          <h1 className={styles.reservationTitle}> Reserve a Spot</h1>
+    <form onSubmit={handleSubmit}>
+      {/*Reservation Page */}
+      <Container className={styles.reservationAlign} class="reservation">
+        <h1 className={styles.reservationTitle}> Reserve a Spot</h1>
+        <Row>
+          <Col xs={5}>
+            <label className={styles.reservationLabel}>First Name</label>
+          </Col>
+          <Col xs={5}>
+            <label className={styles.reservationLabel}>Last Name</label>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={5}>
+            <input
+              className={styles.reservationInputBox}
+              type="text"
+              name="firstName"
+              placeholder="Enter First Name"
+              value={formValues.firstName}
+              onChange={handleChange}
+            ></input>
+          </Col>
+          <Col xs={5}>
+            <input
+              className={styles.reservationInputBox}
+              type="text"
+              name="lastName"
+              placeholder="Enter Last Name"
+              value={formValues.lastName}
+              onChange={handleChange}
+            ></input>
+          </Col>
           <Row>
             <Col xs={5}>
-              <label className={styles.reservationLabel}>First Name</label>
+              <label className={styles.error}>{formErrors.firstName}</label>
             </Col>
             <Col xs={5}>
-              <label className={styles.reservationLabel}>Last Name</label>
+              <label className={styles.error}>{formErrors.lastName}</label>
             </Col>
           </Row>
+        </Row>
+        <Row>
+          <Col xs={5}>
+            <label className={styles.reservationLabel}>Email</label>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <input
+              className={styles.reservationLongBox}
+              type="text"
+              name="email"
+              placeholder="ex. example@example.com"
+              value={formValues.email}
+              onChange={handleChange}
+            ></input>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={5}>
+            <label className={styles.error}>{formErrors.email}</label>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={5}>
+            <label className={styles.reservationLabel}>Arrival Time</label>
+          </Col>
+          <Col xs={5}>
+            <label className={styles.reservationLabel}>Departure Time</label>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={5}>
+            <input
+              className={styles.reservationInputBox}
+              type="text"
+              name="arrive"
+              placeholder="ex. 08:00"
+              value={formValues.arrive}
+              onChange={handleChange}
+            ></input>
+          </Col>
+          <Col xs={5}>
+            <input
+              className={styles.reservationInputBox}
+              type="text"
+              name="depart"
+              placeholder="ex. 17:00"
+              value={formValues.depart}
+              onChange={handleChange}
+            ></input>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={5}>
+            <label className={styles.error}>{formErrors.arrive}</label>
+          </Col>
+          <Col xs={5}>
+            <label className={styles.error}>{formErrors.depart}</label>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={5}>
+            <label className={styles.reservationLabel}>
+              License Plate Number
+            </label>
+          </Col>
+          <Col xs={5}>
+            <label className={styles.reservationLabel}>
+              Chosen Parking Spot
+            </label>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={5}>
+            <input
+              className={styles.reservationInputBox}
+              type="text"
+              name="license"
+              placeholder="Enter License Plate"
+              value={formValues.license}
+              onChange={handleChange}
+            ></input>
+          </Col>
+          <Col xs={5}>
+            <input
+              className={styles.reservationInputBox}
+              type="text"
+              name="parkingSpot"
+              placeholder="ex. A"
+              value={formValues.parkingSpot}
+              onChange={handleChange}
+            ></input>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={5}>
+            <label className={styles.error}>{formErrors.license}</label>
+          </Col>
+          <Col xs={5}>
+            <label className={styles.error}>{formErrors.parkingSpot}</label>
+          </Col>
+        </Row>
+
+        {/* Garage Floor Image*/}
+        <Container className={styles.garageFloor}>
           <Row>
-            <Col xs={5}>
-              <input
-                className={styles.reservationInputBox}
-                type="text"
-                name="firstName"
-                placeholder="Enter First Name"
-                value={formValues.firstName}
-                onChange={handleChange}
-              ></input>
+            <Col>
+              <div className={styles.parkingSpot}>
+                <label className={styles.parkingLabel}>A</label>
+              </div>
             </Col>
-            <Col xs={5}>
-              <input
-                className={styles.reservationInputBox}
-                type="text"
-                name="lastName"
-                placeholder="Enter Last Name"
-                value={formValues.lastName}
-                onChange={handleChange}
-              ></input>
+            <Col>
+              <div className={styles.parkingSpot}>
+                <label className={styles.parkingLabel}>B</label>
+              </div>
             </Col>
-            <Row>
-              <Col xs={5}>
-                <label className={styles.error}>{formErrors.firstName}</label>
-              </Col>
-              <Col xs={5}>
-                <label className={styles.error}>{formErrors.lastName}</label>
-              </Col>
-            </Row>
-          </Row>
-          <Row>
-            <Col xs={5}>
-              <label className={styles.reservationLabel}>Email</label>
+            <Col>
+              <div className={styles.parkingSpot}>
+                <label className={styles.parkingLabel}>C</label>
+              </div>
+            </Col>
+            <Col>
+              <div className={styles.parkingSpot}>
+                <label className={styles.parkingLabel}>D</label>
+              </div>
+            </Col>
+            <Col>
+              <div className={styles.parkingSpot}>
+                <label className={styles.parkingLabel}>E</label>
+              </div>
+            </Col>
+            <Col>
+              <div className={styles.parkingSpot}>
+                <label className={styles.parkingLabel}>F</label>
+              </div>
+            </Col>
+            <Col>
+              <div className={styles.parkingSpot}>
+                <label className={styles.parkingLabel}>G</label>
+              </div>
+            </Col>
+            <Col>
+              <div className={styles.parkingSpot}>
+                <label className={styles.parkingLabel}>H</label>
+              </div>
             </Col>
           </Row>
           <Row>
             <Col>
-              <input
-                className={styles.reservationLongBox}
-                type="text"
-                name="email"
-                placeholder="ex. example@example.com"
-                value={formValues.email}
-                onChange={handleChange}
-              ></input>
+              <div className={styles.parkingSpot}>
+                <label className={styles.parkingLabel}>I</label>
+              </div>
+            </Col>
+            <Col>
+              <div className={styles.parkingSpot}>
+                <label className={styles.parkingLabel}>J</label>
+              </div>
+            </Col>
+            <Col>
+              <div className={styles.parkingSpot}>
+                <label className={styles.parkingLabel}>K</label>
+              </div>
+            </Col>
+            <Col>
+              <div className={styles.parkingSpot}>
+                <label className={styles.parkingLabel}>L</label>
+              </div>
+            </Col>
+            <Col>
+              <div className={styles.parkingSpot}>
+                <label className={styles.parkingLabel}>M</label>
+              </div>
+            </Col>
+            <Col>
+              <div className={styles.parkingSpot}>
+                <label className={styles.parkingLabel}>N</label>
+              </div>
+            </Col>
+            <Col>
+              <div className={styles.parkingSpot}>
+                <label className={styles.parkingLabel}>O</label>
+              </div>
+            </Col>
+            <Col>
+              <div className={styles.parkingSpot}>
+                <label className={styles.parkingLabel}>P</label>
+              </div>
             </Col>
           </Row>
-          <Row>
-            <Col xs={5}>
-              <label className={styles.error}>{formErrors.email}</label>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={5}>
-              <label className={styles.reservationLabel}>Arrival Time</label>
-            </Col>
-            <Col xs={5}>
-              <label className={styles.reservationLabel}>Departure Time</label>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={5}>
-              <input
-                className={styles.reservationInputBox}
-                type="text"
-                name="arrive"
-                placeholder="ex. 08:00"
-                value={formValues.arrive}
-                onChange={handleChange}
-              ></input>
-            </Col>
-            <Col xs={5}>
-              <input
-                className={styles.reservationInputBox}
-                type="text"
-                name="depart"
-                placeholder="ex. 17:00"
-                value={formValues.depart}
-                onChange={handleChange}
-              ></input>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={5}>
-              <label className={styles.error}>{formErrors.arrive}</label>
-            </Col>
-            <Col xs={5}>
-              <label className={styles.error}>{formErrors.depart}</label>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={5}>
-              <label className={styles.reservationLabel}>
-                License Plate Number
-              </label>
-            </Col>
-            <Col xs={5}>
-              <label className={styles.reservationLabel}>
-                Chosen Parking Spot
-              </label>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={5}>
-              <input
-                className={styles.reservationInputBox}
-                type="text"
-                name="license"
-                placeholder="Enter License Plate"
-                value={formValues.license}
-                onChange={handleChange}
-              ></input>
-            </Col>
-            <Col xs={5}>
-              <input
-                className={styles.reservationInputBox}
-                type="text"
-                name="parkingSpot"
-                placeholder="ex. A"
-                value={formValues.parkingSpot}
-                onChange={handleChange}
-              ></input>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={5}>
-              <label className={styles.error}>{formErrors.license}</label>
-            </Col>
-            <Col xs={5}>
-              <label className={styles.error}>{formErrors.parkingSpot}</label>
-            </Col>
-          </Row>
-
-          {/* Garage Floor Image*/}
-          <Container className={styles.garageFloor}>
-            <Row>
-              <Col>
-                <div className={styles.parkingSpot}>
-                  <label className={styles.parkingLabel}>A</label>
-                </div>
-              </Col>
-              <Col>
-                <div className={styles.parkingSpot}>
-                  <label className={styles.parkingLabel}>B</label>
-                </div>
-              </Col>
-              <Col>
-                <div className={styles.parkingSpot}>
-                  <label className={styles.parkingLabel}>C</label>
-                </div>
-              </Col>
-              <Col>
-                <div className={styles.parkingSpot}>
-                  <label className={styles.parkingLabel}>D</label>
-                </div>
-              </Col>
-              <Col>
-                <div className={styles.parkingSpot}>
-                  <label className={styles.parkingLabel}>E</label>
-                </div>
-              </Col>
-              <Col>
-                <div className={styles.parkingSpot}>
-                  <label className={styles.parkingLabel}>F</label>
-                </div>
-              </Col>
-              <Col>
-                <div className={styles.parkingSpot}>
-                  <label className={styles.parkingLabel}>G</label>
-                </div>
-              </Col>
-              <Col>
-                <div className={styles.parkingSpot}>
-                  <label className={styles.parkingLabel}>H</label>
-                </div>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <div className={styles.parkingSpot}>
-                  <label className={styles.parkingLabel}>I</label>
-                </div>
-              </Col>
-              <Col>
-                <div className={styles.parkingSpot}>
-                  <label className={styles.parkingLabel}>J</label>
-                </div>
-              </Col>
-              <Col>
-                <div className={styles.parkingSpot}>
-                  <label className={styles.parkingLabel}>K</label>
-                </div>
-              </Col>
-              <Col>
-                <div className={styles.parkingSpot}>
-                  <label className={styles.parkingLabel}>L</label>
-                </div>
-              </Col>
-              <Col>
-                <div className={styles.parkingSpot}>
-                  <label className={styles.parkingLabel}>M</label>
-                </div>
-              </Col>
-              <Col>
-                <div className={styles.parkingSpot}>
-                  <label className={styles.parkingLabel}>N</label>
-                </div>
-              </Col>
-              <Col>
-                <div className={styles.parkingSpot}>
-                  <label className={styles.parkingLabel}>O</label>
-                </div>
-              </Col>
-              <Col>
-                <div className={styles.parkingSpot}>
-                  <label className={styles.parkingLabel}>P</label>
-                </div>
-              </Col>
-            </Row>
-          </Container>
-          <button className={styles.reservationBtn}>Reserve</button>
         </Container>
-        <Fragment></Fragment>
-      </form>
-    </div>
+        <button className={styles.reservationBtn}>Reserve</button>
+      </Container>
+      <Fragment></Fragment>
+    </form>
   );
 };
 export default ReservationForm;

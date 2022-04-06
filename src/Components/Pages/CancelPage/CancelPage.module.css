@@ -1,9 +1,15 @@
 /* styles */
+
+.background {
+    background-color: var(--main-grey);
+    width: 100vw;
+    height: 100vh;
+}
 .cancelAlign{
     border-radius: 5px;
     background-color: lightgray;
     width:70%;
-    height: 100%;
+    height: max-content;
     overflow: hidden;
  }
 
