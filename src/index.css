@@ -17,10 +17,13 @@
   --main-color: #14213d;
   --main-accent: #fca311;
   --main-grey: #e5e5e5;
+  --light-grey: #d3d3d3;
+  --dark-grey: #808080;
   --main-white: #fff;
   --black: #2b2b2b;
   --red: #fc3e3e;
   --dark-red: #7a2222;
   --green: #8fe281;
   --dark-green: #46753e;
+  --light-green: #7fffd4;
 }
