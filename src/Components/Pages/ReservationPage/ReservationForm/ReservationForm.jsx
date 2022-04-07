@@ -2,7 +2,6 @@ import { Fragment } from "react";
 import styles from "./ReservationForm.module.css";
 import { Row, Col, Container } from "react-bootstrap";
 import { useState, useEffect } from "react";
-<<<<<<< HEAD
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import setHours from "date-fns/setHours";
@@ -25,10 +24,6 @@ const ReservationForm = (props) => {
    return date;
  }
 
-=======
-
-const ReservationForm = (props) => {
->>>>>>> aefb542b07004b86384f0db49a11c790fbc1b3be
   const initValues = {
     firstName: "",
     lastName: "",
@@ -173,7 +168,6 @@ const ReservationForm = (props) => {
           </Col>
         </Row>
         <Row>
-<<<<<<< HEAD
         <Col xs={5}>
              <DatePicker className={styles.datePicker}
                selected={startDate}
@@ -203,35 +197,6 @@ const ReservationForm = (props) => {
           </Col>
           <Col xs={5}>
             {/*<label className={styles.error}>{formErrors.depart}</label>*/}
-=======
-          <Col xs={5}>
-            <input
-              className={styles.reservationInputBox}
-              type="text"
-              name="arrive"
-              placeholder="ex. 08:00"
-              value={formValues.arrive}
-              onChange={handleChange}
-            ></input>
-          </Col>
-          <Col xs={5}>
-            <input
-              className={styles.reservationInputBox}
-              type="text"
-              name="depart"
-              placeholder="ex. 17:00"
-              value={formValues.depart}
-              onChange={handleChange}
-            ></input>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={5}>
-            <label className={styles.error}>{formErrors.arrive}</label>
-          </Col>
-          <Col xs={5}>
-            <label className={styles.error}>{formErrors.depart}</label>
->>>>>>> aefb542b07004b86384f0db49a11c790fbc1b3be
           </Col>
         </Row>
         <Row>
