@@ -1,6 +1,10 @@
 // Import the functions you need from the SDKs you need
+// import firebase from 'firebase/app';
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import firebase from 'firebase/compat/app';
+// import { getAnalytics } from "firebase/analytics";
+import axios from 'axios';
+
 import {
     GoogleAuthProvider,
     getAuth,
@@ -31,10 +35,61 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 const app = initializeApp(firebaseConfig);
+const fire = firebase
 const auth = getAuth(app);
 const db = getFirestore(app);
-const analytics = getAnalytics(app);
+// const analytics = getAnalytics(app);
+const url = 'http://localhost:5000/api/users'; //fix url to .env
+
+
+// const auth = getAuth();
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // User is signed in, see docs for a list of available properties
+    // https://firebase.google.com/docs/reference/js/firebase.User
+    const uid = user.uid;
+    // ...
+  } else {
+    // User is signed out
+    // ...
+  }
+});
+
+const createToken = async () => {
+    const user = fire.auth().currentUser;
+    const token = user && (await user.getIdToken());  
+    
+    const payloadHeader = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    return payloadHeader;
+  }
+
+const addToUserDB = async (uid, name, email, isEmployee) => {
+    const header = await createToken();
+    const payload = {
+      uid,
+      name,
+      email,
+      isEmployee,
+    }
+    try {
+        console.log("about to send request")
+        const res = await axios.post(url, payload, header);
+        console.log("post request was sent")
+        return res.data;
+    }
+
+    catch (e) {
+        console.error(e);
+    }
+    
+  };
 
 //google auth
 const googleProvider = new GoogleAuthProvider();
@@ -42,16 +97,21 @@ const signInWithGoogle = async () => {
     try {
         const res = await signInWithPopup(auth, googleProvider);
         const user = res.user;
-        const q = query(collection(db, "users"), where("uid", "==", user.uid));
-        const docs = await getDocs(q);
-        if (docs.docs.length === 0) {
-            await addDoc(collection(db, "users"), {
-                uid: user.uid,
-                name: user.displayName,
-                authProvider: "google",
-                email: user.email,
-            });
-        }
+        addToUserDB(user.uid, user.displayName, user.email, "false")
+        // const q = query(collection(db, "users"), where("uid", "==", user.uid));
+        // const docs = await getDocs(q);
+        // if (docs.docs.length === 0) {
+        //     await addDoc(collection(db, "users"), {
+        //         uid: user.uid,
+        //         name: user.displayName,
+        //         authProvider: "google",
+        //         email: user.email,
+        //         isEmployee: "false"
+        //     });
+        // }
+
+
+
     } catch (err) {
         console.error(err);
         alert(err.message);
