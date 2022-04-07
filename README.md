@@ -3,6 +3,8 @@
 ## CS160 Sec 02
 
 ###### Catherine Nguyen, Martin Nguyen, John Paul Tran, Anthony Tran, Sean Caasi
+###### After downloading code, run npm install to install node modules.
+###### Run npm start to view front-end on localhost.
 
 # Getting Started with Create React App
 
