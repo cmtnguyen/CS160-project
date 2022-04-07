@@ -12,31 +12,19 @@
 
 .reservationAlign{
     border-radius: 5px;
-    background-color: lightgray;
+    background-color: var(--light-grey);
     width:70%;
     height: max-content;
     overflow: hidden;
  }
  
-.reservationTitle{
+ .reservationTitle{
     text-align: center;
-    color: black;
-}
-
-.reservationLongBox{
-    border-radius: 10px;
-    background: white;
-    border-color: white;
-    padding: 10px;
-    width: 80%;
-    min-width: 50px;
-    max-width: 620px;
-    height: 35px;
-    margin-left: 150px;
+    color: var(--black);
 }
 
 .reservationLabel{
-    color: black;
+    color: var(--black);
     margin-top: 10px;
     margin-left:  150px;
 }
@@ -44,18 +32,27 @@
 input{
     display: flex;
     flex-direction: column;
-    border: 1px solid gray;
+    border: 1px solid var(--dark-grey);
     font-size: 1.1em;
 }
 
-.reservationInputBox{
+.reservationLongBox, .reservationInputBox{
     border-radius: 10px;
-    background: white;
-    border-color: white;
+    background: var(--main-white);
+    border-color: var(--main-white);
     padding: 10px;
-    width: 200px;
     height: 35px;
     margin-left: 150px;
+}
+
+.reservationLongBox {
+    width: 80%;
+    min-width: 50px;
+    max-width: 620px;
+}
+
+.reservationInputBox{
+    width: 200px;
 }
 
 .reservationBtn{
@@ -70,12 +67,12 @@ input{
 .garageFloor{
     margin-top: 20px;
     border-style: solid;
-    border-color: black;
+    border-color: var(--black);
     width: 300px;
     height: 110px;
 }
 
-.parkingSpot{
+.parkingSpot, .parkingSpot2{
     height: 45px;
     width: 30px;
     background-color: aquamarine;
@@ -86,27 +83,21 @@ input{
 }
 
 .parkingSpot2{
-    height: 45px;
-    width: 30px;
     background-color: red;
-    margin-left:-10px;
-    margin-right:-30px;
-    margin-top: 5px;
-    margin-bottom: 2px;
 }
 
 .parkingLabel{
     margin-left: 8px;
-    color: white;
+    color: var(--main-white);
 }
 
 .error{
-    color: red;
+    color: var(--red);
     margin-left: 150px;
 }
 .datePicker{
-    border-color: white;
-    background-color: white;
+    border-color: var(--main-white);
+    background-color: var(--main-white);
     border-radius: 10px;
     height: 35px;
     width: 200px;
