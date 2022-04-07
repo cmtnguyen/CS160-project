@@ -1,1 +1,37 @@
 /* styles */
+.checkAlign{
+    border-radius: 5px;
+    background-color: lightgray;
+    width:70%;
+    height: max-content;
+    overflow: hidden;
+ }
+
+ .checkTitle{
+    text-align: center;
+    color: var(--black);
+}
+
+.checkInputBox{
+    border-radius: 10px;
+    background: var(--main-white);
+    border-color: var(--black);
+    padding: 10px;
+    width: 500px;
+    height: 30px;
+    margin-left: 10px;
+}
+
+.checkBtn{
+    margin-left: 430px;
+    margin-top: 30px;
+    background-color: var(--main-accent);
+    color: var(--main-white);
+    padding: 0.5rem 1.5rem;
+    border-radius: 10px;
+}
+
+.columnGap{
+    column-gap: 1px;
+    margin-top: 10px;
+}
