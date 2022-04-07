@@ -37,7 +37,7 @@ const ViewPage = () => {
               placeholder="ex. A12345"
             />
           </Row>
-          <Row>
+          <Row className={styles.columnGap}>
           <button className={styles.checkBtn} type="submit" href="/">
             Check In
           </button>
