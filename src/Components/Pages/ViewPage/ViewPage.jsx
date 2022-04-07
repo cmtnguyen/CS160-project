@@ -16,30 +16,32 @@ const ViewPage = () => {
   }, [user, loading, navigate]);
   return (
     <Fragment>
-      <Container className={styles.checkAlign}>
-        <h1 className={styles.checkTitle}>Check In</h1>
-        <Row className={styles.columnGap}>
-          <label>Email:</label>
-          <input
-            className={styles.checkInputBox}
-            type="text"
-            name="name"
-            placeholder="ex. example@example.com"
-          />
-        </Row>
-        <Row className={styles.columnGap}>
-          <label>Reservation Number:</label>
-          <input
-            className={styles.checkInputBox}
-            type="text"
-            name="name"
-            placeholder="ex. A12345"
-          />
-        </Row>
-        <button className={styles.checkBtn} type="submit" href="/">
-          Check In
-        </button>
-      </Container>
+      {user && (
+        <Container className={styles.checkAlign}>
+          <h1 className={styles.checkTitle}>Check In</h1>
+          <Row className={styles.columnGap}>
+            <label>Email:</label>
+            <input
+              className={styles.checkInputBox}
+              type="text"
+              name="name"
+              placeholder="ex. example@example.com"
+            />
+          </Row>
+          <Row className={styles.columnGap}>
+            <label>Reservation Number:</label>
+            <input
+              className={styles.checkInputBox}
+              type="text"
+              name="name"
+              placeholder="ex. A12345"
+            />
+          </Row>
+          <button className={styles.checkBtn} type="submit" href="/">
+            Check In
+          </button>
+        </Container>
+      )}
     </Fragment>
   );
 };
