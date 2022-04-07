@@ -1,21 +1,50 @@
 import { Fragment } from "react";
 import styles from "./ReservationForm.module.css";
 import { Row, Col, Container } from "react-bootstrap";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
 
 const ReservationForm = (props) => {
-  const [startDate, setStartDate] = useState(new Date());
-
+  const [startDate, setStartDate] = useState(setHours(setMinutes(new Date(), 0), 0));
+  const componentRef = useRef("null");
   const filterPassedTime = (time) => {
     const currentDate = new Date();
     const selectedDate = new Date(time);
 
     return currentDate.getTime() < selectedDate.getTime();
   };
+
+  const initPark = {
+    A: "A",
+    B: "B",
+    C: "C",
+    D: "D",
+    E: "E",
+    F: "F",
+    G: "G",
+    H: "H",
+    I: "I",
+    J: "J",
+    K: "K",
+    L: "L",
+    M: "M",
+    N: "N",
+    O: "O",
+    P: "P",
+  };
+
+  const handlePark = (e) => {
+    setParkValues({...parkValues, [e.target.name]: e.target.value})
+}
+
+  const [parkValues, setParkValues] = useState(initPark);
+
+  const onClick = (e) => {
+    componentRef.current.value = e.target.value;
+  }
 
   function endDate() {
     var date = new Date();
@@ -33,8 +62,8 @@ const ReservationForm = (props) => {
     arrive: "",
     depart: "",
     license: "",
-    parkingSpot: "",
   };
+
   const [formValues, setFormValues] = useState(initValues);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
@@ -43,6 +72,7 @@ const ReservationForm = (props) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setFormErrors(validate(formValues));
@@ -59,7 +89,6 @@ const ReservationForm = (props) => {
     const errors = {};
     const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
     const timeFormat = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
-    const parkingFormat = /^[A-P]$/;
     if (!values.firstName) {
       errors.firstName = "First Name Required!";
     }
@@ -87,13 +116,6 @@ const ReservationForm = (props) => {
     if (!values.license) {
       errors.license = "License Plate Required!";
     }
-
-    if (!values.parkingSpot) {
-      errors.parkingSpot = "Chosen Parking Spot Required!";
-    } else if (!parkingFormat.test(values.parkingSpot)) {
-      errors.parkingSpot = "Invalid Parking Spot";
-    }
-
     return errors;
   };
   return (
@@ -228,11 +250,9 @@ const ReservationForm = (props) => {
           <Col xs={5}>
             <input
               className={styles.reservationInputBox}
+              ref={componentRef}
               type="text"
-              name="parkingSpot"
-              placeholder="ex. A"
-              value={formValues.parkingSpot}
-              onChange={handleChange}
+              disabled
             ></input>
           </Col>
         </Row>
@@ -249,86 +269,134 @@ const ReservationForm = (props) => {
         <Container className={styles.garageFloor}>
           <Row>
             <Col>
-              <div className={styles.parkingSpot}>
-                <label className={styles.parkingLabel}>A</label>
-              </div>
+              <button className={styles.parkingSpot}
+              type="button"
+              onClick={onClick}
+              value={parkValues.A}>
+                A
+              </button>
             </Col>
             <Col>
-              <div className={styles.parkingSpot}>
-                <label className={styles.parkingLabel}>B</label>
-              </div>
+            <button className={styles.parkingSpot}
+              type="button"
+              onClick={onClick}
+              value={parkValues.B}>
+                B
+              </button>
             </Col>
             <Col>
-              <div className={styles.parkingSpot}>
-                <label className={styles.parkingLabel}>C</label>
-              </div>
+            <button className={styles.parkingSpot}
+              type="button"
+              onClick={onClick}
+              value={parkValues.C}>
+                C
+              </button>
             </Col>
             <Col>
-              <div className={styles.parkingSpot}>
-                <label className={styles.parkingLabel}>D</label>
-              </div>
+            <button className={styles.parkingSpot}
+              type="button"
+              onClick={onClick}
+              value={parkValues.D}>
+                D
+              </button>
             </Col>
             <Col>
-              <div className={styles.parkingSpot}>
-                <label className={styles.parkingLabel}>E</label>
-              </div>
+            <button className={styles.parkingSpot}
+              type="button"
+              onClick={onClick}
+              value={parkValues.E}>
+                E
+              </button>
             </Col>
             <Col>
-              <div className={styles.parkingSpot}>
-                <label className={styles.parkingLabel}>F</label>
-              </div>
+            <button className={styles.parkingSpot}
+              type="button"
+              onClick={onClick}
+              value={parkValues.F}>
+                F
+              </button>
             </Col>
             <Col>
-              <div className={styles.parkingSpot}>
-                <label className={styles.parkingLabel}>G</label>
-              </div>
+            <button className={styles.parkingSpot}
+              type="button"
+              onClick={onClick}
+              value={parkValues.G}>
+                G
+              </button>
             </Col>
             <Col>
-              <div className={styles.parkingSpot}>
-                <label className={styles.parkingLabel}>H</label>
-              </div>
+            <button className={styles.parkingSpot}
+              type="button"
+              onClick={onClick}
+              value={parkValues.H}>
+                H
+              </button>
             </Col>
           </Row>
           <Row>
             <Col>
-              <div className={styles.parkingSpot}>
-                <label className={styles.parkingLabel}>I</label>
-              </div>
+            <button className={styles.parkingSpot}
+              type="button"
+              onClick={onClick}
+              value={parkValues.I}>
+                I
+              </button>
             </Col>
             <Col>
-              <div className={styles.parkingSpot}>
-                <label className={styles.parkingLabel}>J</label>
-              </div>
+            <button className={styles.parkingSpot}
+              type="button"
+              onClick={onClick}
+              value={parkValues.J}>
+                J
+              </button>
             </Col>
             <Col>
-              <div className={styles.parkingSpot}>
-                <label className={styles.parkingLabel}>K</label>
-              </div>
+            <button className={styles.parkingSpot}
+              type="button"
+              onClick={onClick}
+              value={parkValues.K}>
+                K
+              </button>
             </Col>
             <Col>
-              <div className={styles.parkingSpot}>
-                <label className={styles.parkingLabel}>L</label>
-              </div>
+            <button className={styles.parkingSpot}
+              type="button"
+              onClick={onClick}
+              value={parkValues.L}>
+                L
+              </button>
             </Col>
             <Col>
-              <div className={styles.parkingSpot}>
-                <label className={styles.parkingLabel}>M</label>
-              </div>
+            <button className={styles.parkingSpot}
+              type="button"
+              onClick={onClick}
+              value={parkValues.M}>
+                M
+              </button>
             </Col>
             <Col>
-              <div className={styles.parkingSpot}>
-                <label className={styles.parkingLabel}>N</label>
-              </div>
+            <button className={styles.parkingSpot}
+              type="button"
+              onClick={onClick}
+              value={parkValues.N}>
+                N
+              </button>
             </Col>
             <Col>
-              <div className={styles.parkingSpot}>
-                <label className={styles.parkingLabel}>O</label>
-              </div>
+            <button className={styles.parkingSpot}
+              type="button"
+              onClick={onClick}
+              value={parkValues.O}>
+                O
+              </button>
             </Col>
             <Col>
-              <div className={styles.parkingSpot}>
-                <label className={styles.parkingLabel}>P</label>
-              </div>
+            <button className={styles.parkingSpot}
+              type="button"
+              onClick={onClick}
+              value={parkValues.P}>
+                P
+              </button>
             </Col>
           </Row>
         </Container>
