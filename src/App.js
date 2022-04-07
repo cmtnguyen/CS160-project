@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import Landing from './Components/Pages/LandingPage/LandingPage';
@@ -21,6 +21,7 @@ function App() {
         <Route exact path="/reserve" element={<Reserve />} />
         <Route exact path="/reservations" element={<View />} />
         <Route exact path="/report" element={<Report />} />
+        <Route path="*" element={<Navigate replace to="/" />} />
       </Routes>
     </Router>
   );
