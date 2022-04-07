@@ -14,15 +14,10 @@
     border-radius: 5px;
     background-color: lightgray;
     width:70%;
-    height: 100%;
+    height: max-content;
     overflow: hidden;
  }
  
-.reservationColor{
-    background-color: var(--main-grey);
-    height: 750px;
-}
-
 .reservationTitle{
     text-align: center;
     color: black;
@@ -98,4 +93,12 @@ input{
 .error{
     color: red;
     margin-left: 150px;
+}
+.datePicker{
+    border-color: white;
+    background-color: white;
+    border-radius: 10px;
+    height: 35px;
+    width: 200px;
+    margin-left: 8.5em;
 }
