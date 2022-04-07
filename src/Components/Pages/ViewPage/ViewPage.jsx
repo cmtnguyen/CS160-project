@@ -37,9 +37,14 @@ const ViewPage = () => {
               placeholder="ex. A12345"
             />
           </Row>
+          <Row>
           <button className={styles.checkBtn} type="submit" href="/">
             Check In
           </button>
+          <button className={styles.checkBtn} type="submit" href="/">
+            Cancel
+          </button>
+          </Row>
         </Container>
       )}
     </Fragment>
