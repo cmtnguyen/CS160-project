@@ -1,7 +1,6 @@
 import { Fragment } from "react";
 //import styles from "./ReservationPage.module.css";
 import ReservationForm from "./ReservationForm/ReservationForm";
-import Navbar from "../../Navbar";
 import React, { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
@@ -15,11 +14,6 @@ const ReservationPage = () => {
     if (loading) return;
     if (!user) return navigate("/login");
   }, [user, loading, navigate]);
-  return (
-    <Fragment>
-      <Navbar />
-      {user && <ReservationForm />}
-    </Fragment>
-  );
+  return <Fragment>{user && <ReservationForm />}</Fragment>;
 };
 export default ReservationPage;

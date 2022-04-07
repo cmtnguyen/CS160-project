@@ -1,12 +1,10 @@
 import { Fragment } from "react";
 import { Row, Container } from "react-bootstrap";
-import Navbar from "../../Navbar";
 import styles from "./ReportPage.module.css";
 
 const ReportPage = () => {
   return (
     <Fragment>
-      <Navbar />
       <Container className={styles.reportAlign}>
         <h1 className={styles.reportTitle}>Report Form</h1>
         <p>

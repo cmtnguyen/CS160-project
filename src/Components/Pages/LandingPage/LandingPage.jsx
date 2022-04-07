@@ -1,5 +1,4 @@
 import { Fragment } from "react";
-import Navbar from "../../Navbar";
 import styles from "./LandingPage.module.css";
 import { Row, Col, Button, Container } from "react-bootstrap";
 import Lot from "../../Assets/Lot.svg";
@@ -8,7 +7,6 @@ import Phone from "../../Assets/phone.svg";
 const LandingPage = () => {
   return (
     <Fragment>
-      <Navbar />
       <Container fluid className="m-0 p-0">
         <section className={styles.header}>
           <Row className="m-0">

@@ -17,7 +17,7 @@ const Navibar = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            <a href="/view" className={styles.navBtn}>
+            <a href="/reservations" className={styles.navBtn}>
               View Reservations
             </a>
             <span className={styles.dots}>&bull;</span>
