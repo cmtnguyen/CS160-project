@@ -8,7 +8,9 @@ import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
 
 const ReservationForm = (props) => {
-  const [startDate, setStartDate] = useState(setHours(setMinutes(new Date(), 0), 0));
+  const [startDate, setStartDate] = useState(
+    setHours(setMinutes(new Date(), 0), 0)
+  );
   const componentRef = useRef("null");
   const filterPassedTime = (time) => {
     const currentDate = new Date();
@@ -17,7 +19,7 @@ const ReservationForm = (props) => {
     return currentDate.getTime() < selectedDate.getTime();
   };
 
-  const initPark = {
+  const parkValues = {
     A: "A",
     B: "B",
     C: "C",
@@ -36,15 +38,9 @@ const ReservationForm = (props) => {
     P: "P",
   };
 
-  const handlePark = (e) => {
-    setParkValues({...parkValues, [e.target.name]: e.target.value})
-}
-
-  const [parkValues, setParkValues] = useState(initPark);
-
-  const onClick = (e) => {
+  const onClickHandler = (e) => {
     componentRef.current.value = e.target.value;
-  }
+  };
 
   function endDate() {
     var date = new Date();
@@ -269,132 +265,164 @@ const ReservationForm = (props) => {
         <Container className={styles.garageFloor}>
           <Row>
             <Col>
-              <button className={styles.parkingSpot}
-              type="button"
-              onClick={onClick}
-              value={parkValues.A}>
+              <button
+                className={styles.parkingSpot}
+                type="button"
+                onClick={onClickHandler}
+                value={parkValues.A}
+              >
                 A
               </button>
             </Col>
             <Col>
-            <button className={styles.parkingSpot}
-              type="button"
-              onClick={onClick}
-              value={parkValues.B}>
+              <button
+                className={styles.parkingSpot}
+                type="button"
+                onClick={onClickHandler}
+                value={parkValues.B}
+              >
                 B
               </button>
             </Col>
             <Col>
-            <button className={styles.parkingSpot}
-              type="button"
-              onClick={onClick}
-              value={parkValues.C}>
+              <button
+                className={styles.parkingSpot}
+                type="button"
+                onClick={onClickHandler}
+                value={parkValues.C}
+              >
                 C
               </button>
             </Col>
             <Col>
-            <button className={styles.parkingSpot}
-              type="button"
-              onClick={onClick}
-              value={parkValues.D}>
+              <button
+                className={styles.parkingSpot}
+                type="button"
+                onClick={onClickHandler}
+                value={parkValues.D}
+              >
                 D
               </button>
             </Col>
             <Col>
-            <button className={styles.parkingSpot}
-              type="button"
-              onClick={onClick}
-              value={parkValues.E}>
+              <button
+                className={styles.parkingSpot}
+                type="button"
+                onClick={onClickHandler}
+                value={parkValues.E}
+              >
                 E
               </button>
             </Col>
             <Col>
-            <button className={styles.parkingSpot}
-              type="button"
-              onClick={onClick}
-              value={parkValues.F}>
+              <button
+                className={styles.parkingSpot}
+                type="button"
+                onClick={onClickHandler}
+                value={parkValues.F}
+              >
                 F
               </button>
             </Col>
             <Col>
-            <button className={styles.parkingSpot}
-              type="button"
-              onClick={onClick}
-              value={parkValues.G}>
+              <button
+                className={styles.parkingSpot}
+                type="button"
+                onClick={onClickHandler}
+                value={parkValues.G}
+              >
                 G
               </button>
             </Col>
             <Col>
-            <button className={styles.parkingSpot}
-              type="button"
-              onClick={onClick}
-              value={parkValues.H}>
+              <button
+                className={styles.parkingSpot}
+                type="button"
+                onClick={onClickHandler}
+                value={parkValues.H}
+              >
                 H
               </button>
             </Col>
           </Row>
           <Row>
             <Col>
-            <button className={styles.parkingSpot}
-              type="button"
-              onClick={onClick}
-              value={parkValues.I}>
+              <button
+                className={styles.parkingSpot}
+                type="button"
+                onClick={onClickHandler}
+                value={parkValues.I}
+              >
                 I
               </button>
             </Col>
             <Col>
-            <button className={styles.parkingSpot}
-              type="button"
-              onClick={onClick}
-              value={parkValues.J}>
+              <button
+                className={styles.parkingSpot}
+                type="button"
+                onClick={onClickHandler}
+                value={parkValues.J}
+              >
                 J
               </button>
             </Col>
             <Col>
-            <button className={styles.parkingSpot}
-              type="button"
-              onClick={onClick}
-              value={parkValues.K}>
+              <button
+                className={styles.parkingSpot}
+                type="button"
+                onClick={onClickHandler}
+                value={parkValues.K}
+              >
                 K
               </button>
             </Col>
             <Col>
-            <button className={styles.parkingSpot}
-              type="button"
-              onClick={onClick}
-              value={parkValues.L}>
+              <button
+                className={styles.parkingSpot}
+                type="button"
+                onClick={onClickHandler}
+                value={parkValues.L}
+              >
                 L
               </button>
             </Col>
             <Col>
-            <button className={styles.parkingSpot}
-              type="button"
-              onClick={onClick}
-              value={parkValues.M}>
+              <button
+                className={styles.parkingSpot}
+                type="button"
+                onClick={onClickHandler}
+                value={parkValues.M}
+              >
                 M
               </button>
             </Col>
             <Col>
-            <button className={styles.parkingSpot}
-              type="button"
-              onClick={onClick}
-              value={parkValues.N}>
+              <button
+                className={styles.parkingSpot}
+                type="button"
+                onClick={onClickHandler}
+                value={parkValues.N}
+              >
                 N
               </button>
             </Col>
             <Col>
-            <button className={styles.parkingSpot}
-              type="button"
-              onClick={onClick}
-              value={parkValues.O}>
+              <button
+                className={styles.parkingSpot}
+                type="button"
+                onClick={onClickHandler}
+                value={parkValues.O}
+              >
                 O
               </button>
             </Col>
             <Col>
-            <button className={styles.parkingSpot}
-              type="button"
-              onClick={onClick}
-              value={parkValues.P}>
+              <button
+                className={styles.parkingSpot}
+                type="button"
+                onClick={onClickHandler}
+                value={parkValues.P}
+              >
                 P
               </button>
             </Col>
