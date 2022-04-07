@@ -1,9 +1,9 @@
 import { Fragment } from "react";
 import { Row, Container } from "react-bootstrap";
 import Navbar from "../../Navbar";
-import styles from "./CheckInPage.module.css";
+import styles from "./ViewPage.module.css";
 
-const CheckInPage = () => {
+const ViewPage = () => {
   return (
     <Fragment>
       <Navbar />
@@ -34,4 +34,4 @@ const CheckInPage = () => {
     </Fragment>
   );
 };
-export default CheckInPage;
+export default ViewPage;

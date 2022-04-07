@@ -17,16 +17,12 @@ const Navibar = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            <a href="/cancel" className={styles.navBtn}>
-              Cancel Reservation
+            <a href="/view" className={styles.navBtn}>
+              View Reservations
             </a>
             <span className={styles.dots}>&bull;</span>
             <a href="/report" className={styles.navBtn}>
               Report
-            </a>
-            <span className={styles.dots}>&bull;</span>
-            <a href="/checkIn" className={styles.navBtn}>
-              Check-In
             </a>
             <span className={styles.dots}>&bull;</span>
             <a href="/reserve" className={styles.navBtn}>
