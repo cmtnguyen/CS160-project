@@ -2,27 +2,29 @@ import { Fragment } from "react";
 import styles from "./ReservationForm.module.css";
 import { Row, Col, Container } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
 
-
 const ReservationForm = (props) => {
   const [startDate, setStartDate] = useState(new Date());
- 
- const filterPassedTime = (time) => {
-   const currentDate = new Date();
-   const selectedDate = new Date(time);
- 
-   return currentDate.getTime() < selectedDate.getTime();
- };
- 
- function endDate() {
-   var date = new Date(); 
-    date = setHours(setMinutes(new Date(startDate), 0), startDate.getHours() + 1);
-   return date;
- }
+
+  const filterPassedTime = (time) => {
+    const currentDate = new Date();
+    const selectedDate = new Date(time);
+
+    return currentDate.getTime() < selectedDate.getTime();
+  };
+
+  function endDate() {
+    var date = new Date();
+    date = setHours(
+      setMinutes(new Date(startDate), 0),
+      startDate.getHours() + 1
+    );
+    return date;
+  }
 
   const initValues = {
     firstName: "",
@@ -168,28 +170,29 @@ const ReservationForm = (props) => {
           </Col>
         </Row>
         <Row>
-        <Col xs={5}>
-             <DatePicker className={styles.datePicker}
-               selected={startDate}
-               onChange={(date) => setStartDate(date)}
-               showTimeSelect
-               filterTime={filterPassedTime}
-               minDate={new Date()}
-               locale="en-US"
-               timeIntervals={60}
-               dateFormat="MMMM d, yyyy h:mm aa"
-             />
-           </Col>
-           <Col xs={5}>
-             <DatePicker className={styles.datePicker}
-               selected={endDate()}
-               disabled
-               showTimeSelect
-               locale="en-US"
-               dateFormat="MMMM d, yyyy h:mm aa"
-             />
-           </Col>
-
+          <Col xs={5}>
+            <DatePicker
+              className={styles.datePicker}
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+              showTimeSelect
+              filterTime={filterPassedTime}
+              minDate={new Date()}
+              locale="en-US"
+              timeIntervals={60}
+              dateFormat="MMMM d, yyyy h:mm aa"
+            />
+          </Col>
+          <Col xs={5}>
+            <DatePicker
+              className={styles.datePicker}
+              selected={endDate()}
+              disabled
+              showTimeSelect
+              locale="en-US"
+              dateFormat="MMMM d, yyyy h:mm aa"
+            />
+          </Col>
         </Row>
         <Row>
           <Col xs={5}>

@@ -1,7 +1,7 @@
 /* styles */
 .reportAlign{
     border-radius: 5px;
-    background-color: lightgray;
+    background-color: var(--light-grey);
     width:70%;
     height: 100%;
     overflow: hidden;
