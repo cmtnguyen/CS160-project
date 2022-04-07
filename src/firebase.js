@@ -1,10 +1,7 @@
 // Import the functions you need from the SDKs you need
-// import firebase from 'firebase/app';
 import { initializeApp } from "firebase/app";
-import firebase from 'firebase/compat/app';
-// import { getAnalytics } from "firebase/analytics";
+import { getAnalytics } from "firebase/analytics";
 import axios from 'axios';
-
 import {
     GoogleAuthProvider,
     getAuth,
@@ -25,71 +22,55 @@ import {
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyAbAKy7GUQPr5KMcmaBjbElXFoy0LXDZsc",
-    authDomain: "car-eservation.firebaseapp.com",
-    projectId: "car-eservation",
-    storageBucket: "car-eservation.appspot.com",
-    messagingSenderId: "494168999521",
-    appId: "1:494168999521:web:618493f47d4ce93e62cc20",
-    measurementId: "G-Q1NT69S8PK"
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID,
+  measurementId: process.env.FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
 const app = initializeApp(firebaseConfig);
-const fire = firebase
 const auth = getAuth(app);
 const db = getFirestore(app);
-// const analytics = getAnalytics(app);
-const url = 'http://localhost:5000/api/users'; //fix url to .env
-
-
-// const auth = getAuth();
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    // User is signed in, see docs for a list of available properties
-    // https://firebase.google.com/docs/reference/js/firebase.User
-    const uid = user.uid;
-    // ...
-  } else {
-    // User is signed out
-    // ...
-  }
-});
+const analytics = getAnalytics(app);
+const url = process.env.FIREBASE_URL; 
 
 const createToken = async () => {
-    const user = fire.auth().currentUser;
-    const token = user && (await user.getIdToken());  
-    
-    const payloadHeader = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    return payloadHeader;
-  }
+  const user = auth.currentUser;
+  const token = user && (await user.getIdToken());  
+  
+  const payloadHeader = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  return payloadHeader;
+}
 
 const addToUserDB = async (uid, name, email, isEmployee) => {
-    const header = await createToken();
-    const payload = {
-      uid,
-      name,
-      email,
-      isEmployee,
-    }
-    try {
-        console.log("about to send request")
-        const res = await axios.post(url, payload, header);
-        console.log("post request was sent")
-        return res.data;
-    }
+  const header = await createToken();
+  const payload = {
+    uid,
+    name,
+    email,
+    isEmployee,
+  }
+  try {
+      console.log("about to send request")
+      const res = await axios.post(url, payload, header);
+      console.log("post request was sent")
+      return res.data;
+  }
 
-    catch (e) {
-        console.error(e);
-    }
-    
-  };
+  catch (e) {
+      console.error(e);
+  }
+  
+};
 
 //google auth
 const googleProvider = new GoogleAuthProvider();
@@ -106,12 +87,8 @@ const signInWithGoogle = async () => {
         //         name: user.displayName,
         //         authProvider: "google",
         //         email: user.email,
-        //         isEmployee: "false"
         //     });
         // }
-
-
-
     } catch (err) {
         console.error(err);
         alert(err.message);
@@ -127,4 +104,4 @@ export {
     db,
     signInWithGoogle,
     logout
-};
+}; 
