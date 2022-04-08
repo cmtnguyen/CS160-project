@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { Row, Container } from "react-bootstrap";
+import { Row, Col, Container } from "react-bootstrap";
 import { useEffect } from "react";
 import { auth } from "../../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -37,13 +37,17 @@ const ViewPage = () => {
               placeholder="ex. A12345"
             />
           </Row>
-          <Row className={styles.columnGap}>
+          <Row>
+          <Col xs={2}>
           <button className={styles.checkBtn} type="submit" href="/">
             Check In
           </button>
+          </Col>
+          <Col xs={2}>
           <button className={styles.checkBtn} type="submit" href="/">
             Cancel
           </button>
+          </Col>
           </Row>
         </Container>
       )}
