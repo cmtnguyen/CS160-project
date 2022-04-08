@@ -24,7 +24,7 @@
 
 .checkBtn{
     margin-left: 300px;
-    width: max-content;
+    width:max-content;
     margin-top: 30px;
     background-color: var(--main-accent);
     color: var(--main-white);
@@ -34,6 +34,7 @@
 
 .columnGap{
     column-gap: 1px;
+    margin-left: 200px;
     margin-top: 10px;
     margin-left: 200px;
 }
