@@ -23,15 +23,17 @@
 }
 
 .checkBtn{
-    margin-left: 430px;
+    margin-left: 300px;
+    width: max-content;
     margin-top: 30px;
     background-color: var(--main-accent);
     color: var(--main-white);
-    padding: 0.5rem 1.5rem;
+    padding: 0.5rem 2.5rem;
     border-radius: 10px;
 }
 
 .columnGap{
     column-gap: 1px;
     margin-top: 10px;
+    margin-left: 200px;
 }
