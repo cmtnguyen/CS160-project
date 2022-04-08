@@ -18,22 +18,15 @@
     overflow: hidden;
  }
  
-.reservationTitle{
+ .reservationTitle{
     text-align: center;
     color: var(--black);
 }
-
 
 .reservationLabel{
     color: var(--black);
     margin-top: 10px;
     margin-left:  150px;
-}
-input{
-    display: flex;
-    flex-direction: column;
-    border: 1px solid var(--dark-grey);
-    font-size: 1.1em;
 }
 input{
     display: flex;
@@ -77,7 +70,7 @@ input{
     height: 110px;
 }
 
-.parkingSpot{
+.parkingSpot, .parkingSpot2{
     height: 45px;
     width: 30px;
     background-color: var(--light-green);
@@ -88,13 +81,7 @@ input{
 }
 
 .parkingSpot2{
-    height: 45px;
-    width: 30px;
     background-color: var(--red);
-    margin-left:-10px;
-    margin-right:-30px;
-    margin-top: 5px;
-    margin-bottom: 2px;
 }
 
 .parkingLabel{
