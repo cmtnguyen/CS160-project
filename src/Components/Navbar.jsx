@@ -17,26 +17,26 @@ const Navibar = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            <a href="/reservations" className={styles.navBtn}>
+            <Link to="/reservations" className={styles.navBtn}>
               View Reservations
-            </a>
+            </Link>
             <span className={styles.dots}>&bull;</span>
-            <a href="/report" className={styles.navBtn}>
+            <Link to="/report" className={styles.navBtn}>
               Report
-            </a>
+            </Link>
             <span className={styles.dots}>&bull;</span>
-            <a href="/reserve" className={styles.navBtn}>
+            <Link to="/reserve" className={styles.navBtn}>
               Reserve a Spot
-            </a>
+            </Link>
             {user && (
               <p className={styles.navBtn} onClick={logout}>
                 Logout
               </p>
             )}
             {!user && (
-              <a href="/login" className={styles.navBtn}>
+              <Link to="/login" className={styles.navBtn}>
                 Login
-              </a>
+              </Link>
             )}
           </Nav>
         </Navbar.Collapse>

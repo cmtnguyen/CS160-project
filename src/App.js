@@ -12,15 +12,15 @@ import Navbar from './Components/Navbar';
 function App() {
   return (
     // Routes for website
-    // <Route exact path="/PAGELINK" element={<PAGE />} />
+    // <Route path="/PAGELINK" element={<PAGE />} />
     <Router>
       <Navbar />
       <Routes>
-        <Route exact path="/" element={<Landing />} />
-        <Route exact path="/login" element={<Login />} />
-        <Route exact path="/reserve" element={<Reserve />} />
-        <Route exact path="/reservations" element={<View />} />
-        <Route exact path="/report" element={<Report />} />
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/reserve" element={<Reserve />} />
+        <Route path="/reservations" element={<View />} />
+        <Route path="/report" element={<Report />} />
         <Route path="*" element={<Navigate replace to="/" />} />
       </Routes>
     </Router>
