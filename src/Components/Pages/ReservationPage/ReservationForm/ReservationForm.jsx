@@ -6,10 +6,15 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
+import axios from "axios";
+import { createToken, auth } from "../../../../firebase.js";
+import { v4 as uuid } from "uuid";
+
+const url = process.env.REACT_APP_FIREBASE_POST_URL;
 
 const ReservationForm = (props) => {
   const [startDate, setStartDate] = useState(
-    setHours(setMinutes(new Date(), 0), 0)
+    setHours(setMinutes(new Date(), 0), new Date().getHours() + 1)
   );
   const componentRef = useRef("null");
   const filterPassedTime = (time) => {
@@ -40,6 +45,7 @@ const ReservationForm = (props) => {
 
   const onClickHandler = (e) => {
     componentRef.current.value = e.target.value;
+    setParkingSpot(e.target.value);
   };
 
   function endDate() {
@@ -55,13 +61,12 @@ const ReservationForm = (props) => {
     firstName: "",
     lastName: "",
     email: "",
-    arrive: "",
-    depart: "",
     license: "",
   };
 
   const [formValues, setFormValues] = useState(initValues);
   const [formErrors, setFormErrors] = useState({});
+  const [parkingSpot, setParkingSpot] = useState(null);
   const [isSubmit, setIsSubmit] = useState(false);
 
   const handleChange = (e) => {
@@ -69,9 +74,72 @@ const ReservationForm = (props) => {
     setFormValues({ ...formValues, [name]: value });
   };
 
+  const addToReservationDB = async (
+    reservationId,
+    parkingSpotId,
+    userId,
+    license,
+    date,
+    time,
+    isCheckedIn
+  ) => {
+    const header = await createToken();
+    const payload = {
+      reservationId,
+      parkingSpotId,
+      userId,
+      license,
+      date,
+      time,
+      isCheckedIn,
+    };
+    try {
+      const res = await axios.post(url, payload, header);
+      return res.data;
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const user = auth.currentUser;
   const handleSubmit = (e) => {
     e.preventDefault();
-    setFormErrors(validate(formValues));
+
+    const errors = validate(formValues);
+    setFormErrors(errors);
+    console.log(formValues);
+    if (Object.keys(formErrors).length === 0) {
+      // check if there are no errors
+      const reservationId = uuid();
+      const parkingSpotId = parkingSpot;
+      const userId = user.uid;
+      const license = formValues.license;
+      const date = startDate;
+      const time = date.getHours();
+      const isCheckedIn = false;
+      /*
+      console.log(reservationId);
+      console.log(parkingSpotId);
+      console.log(userId);
+      console.log(license);
+      console.log(date);
+      console.log(time);
+      */
+      try {
+        addToReservationDB(
+          reservationId,
+          parkingSpotId,
+          userId,
+          license,
+          date,
+          time,
+          isCheckedIn,
+        );
+      } catch (err) {
+        console.error(err);
+        alert(err.message);
+      }
+    }
     setIsSubmit(true);
   };
 
@@ -84,7 +152,7 @@ const ReservationForm = (props) => {
   const validate = (values) => {
     const errors = {};
     const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-    const timeFormat = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
+    //const timeFormat = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
     if (!values.firstName) {
       errors.firstName = "First Name Required!";
     }
@@ -97,17 +165,20 @@ const ReservationForm = (props) => {
       errors.email = "Invalid Email Address";
     }
 
+    // can only pick valid times so not necessary
+    /* 
     if (!values.arrive) {
       errors.arrive = "Arrival Time required";
     } else if (!timeFormat.test(values.arrive)) {
       errors.arrive = "Invalid Arrival Time";
     }
-
+    // doesn't really need to exist
     if (!values.depart) {
       errors.depart = "Departure Time Required!";
     } else if (!timeFormat.test(values.depart)) {
       errors.depart = "Invalid Departure Time";
     }
+    */
 
     if (!values.license) {
       errors.license = "License Plate Required!";

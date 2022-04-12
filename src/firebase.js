@@ -39,7 +39,7 @@ const db = getFirestore(app);
 // const analytics = getAnalytics(app);
 const url = process.env.REACT_APP_FIREBASE_POST_URL; 
 
-const createToken = async () => {
+export const createToken = async () => {
   const user = auth.currentUser;
   const token = user && (await user.getIdToken());  
   
@@ -61,9 +61,7 @@ const addToUserDB = async (uid, name, email, isEmployee) => {
     isEmployee,
   }
   try {
-      console.log("about to send request")
       const res = await axios.post(url, payload, header);
-      console.log("post request was sent")
       return res.data;
   }
 

@@ -3,8 +3,13 @@
 ## CS160 Sec 02
 
 ###### Catherine Nguyen, Martin Nguyen, John Paul Tran, Anthony Tran, Sean Caasi
-###### After downloading code, run npm install to install node modules.
-###### Run npm start to view front-end on localhost.
+1. Clone the repository
+2. Run npm install in the root directory
+3. Open directory in text editor
+4. Create a .env file in the root directory
+5. Inside the .env file write the key information inside
+6. Run npm start
+7. If you are not able to run it locally, you can view it here: https://car-eservation.netlify.app/
 
 # Getting Started with Create React App
 
