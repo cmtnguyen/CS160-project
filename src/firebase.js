@@ -37,7 +37,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 // const analytics = getAnalytics(app);
-const url = process.env.REACT_APP_FIREBASE_POST_URL; 
+const url = process.env.REACT_APP_FIREBASE_POST_URL + "users"; 
 
 export const createToken = async () => {
   const user = auth.currentUser;

@@ -10,7 +10,7 @@ import axios from "axios";
 import { createToken, auth } from "../../../../firebase.js";
 import { v4 as uuid } from "uuid";
 
-const url = process.env.REACT_APP_FIREBASE_POST_URL;
+const url = process.env.REACT_APP_FIREBASE_POST_URL + "reservations";
 
 const ReservationForm = (props) => {
   const [startDate, setStartDate] = useState(
@@ -78,8 +78,8 @@ const ReservationForm = (props) => {
     reservationId,
     parkingSpotId,
     userId,
-    license,
-    date,
+    licensePlate,
+    reservationDate,
     time,
     isCheckedIn
   ) => {
@@ -88,8 +88,8 @@ const ReservationForm = (props) => {
       reservationId,
       parkingSpotId,
       userId,
-      license,
-      date,
+      licensePlate,
+      reservationDate,
       time,
       isCheckedIn,
     };
@@ -113,9 +113,9 @@ const ReservationForm = (props) => {
       const reservationId = uuid();
       const parkingSpotId = parkingSpot;
       const userId = user.uid;
-      const license = formValues.license;
-      const date = startDate;
-      const time = date.getHours();
+      const licensePlate = formValues.license;
+      const reservationDate = startDate;
+      const time = reservationDate.getHours();
       const isCheckedIn = false;
       /*
       console.log(reservationId);
@@ -130,10 +130,10 @@ const ReservationForm = (props) => {
           reservationId,
           parkingSpotId,
           userId,
-          license,
-          date,
+          licensePlate,
+          reservationDate,
           time,
-          isCheckedIn,
+          isCheckedIn
         );
       } catch (err) {
         console.error(err);
