@@ -8,6 +8,8 @@ import Report from './Components/Pages/ReportPage/ReportPage';
 import Login from './Components/Pages/LoginPage/LoginPage';
 import Navbar from './Components/Navbar';
 
+import ViewViolation from './Components/EmployeePages/ViewViolationPage';
+
 
 function App() {
   return (
@@ -21,6 +23,7 @@ function App() {
         <Route path="/reserve" element={<Reserve />} />
         <Route path="/reservations" element={<View />} />
         <Route path="/report" element={<Report />} />
+        <Route path="/employee/viewreport" element={<ViewViolation />} />
         <Route path="*" element={<Navigate replace to="/" />} />
       </Routes>
     </Router>
