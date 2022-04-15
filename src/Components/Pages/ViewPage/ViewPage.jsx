@@ -83,9 +83,15 @@ const ViewPage = () => {
       setReservations(fetchedReservations);
     };
     fetchReservations();
-  }, []);
+  }, [user]);
   if (reservations === undefined) {
-    return null;
+    return (
+      <div className="d-flex justify-content-md-center">
+        <Link to="/reserve">
+          <button className={styles.reserveBtn}>Make a Reservation</button>
+        </Link>
+      </div>
+    );
   }
 
   const checkInHandler = (id) => {
