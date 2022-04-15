@@ -24,7 +24,7 @@
 
 .checkBtn{
     margin-left: 300px;
-    width:max-content;
+    width: max-content;
     margin-top: 30px;
     background-color: var(--main-accent);
     color: var(--main-white);
@@ -37,4 +37,13 @@
     margin-left: 200px;
     margin-top: 10px;
     margin-left: 200px;
+}
+
+.reserveBtn{
+    width: max-content;
+    background-color: var(--main-accent);
+    color: var(--main-white);
+    padding: 0.5rem 2.5rem;
+    border-radius: 10px;
+    padding-bottom: 1.5rem;
 }

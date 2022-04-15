@@ -3,8 +3,12 @@ import { Row, Col, Container } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { auth } from "../../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useNavigate } from "react-router-dom";
-import { getAllReservations, checkIntoReservation, cancelReservation} from "../../../Services/reservationServices.js"
+import { useNavigate, Link } from "react-router-dom";
+import {
+  getAllReservations,
+  checkIntoReservation,
+  cancelReservation,
+} from "../../../Services/reservationServices.js";
 import styles from "./ViewPage.module.css";
 
 /*
@@ -46,7 +50,7 @@ const Reservation = ({ reservation, onCancel, onCheckIn }) => {
               className={styles.checkBtn}
               onClick={() => onCheckIn(reservation.reservationId)}
             >
-              Check In
+              Check-In
             </button>
           </Col>
           <Col xs={2}>
@@ -66,7 +70,7 @@ const Reservation = ({ reservation, onCancel, onCheckIn }) => {
 const ViewPage = () => {
   const [user, loading] = useAuthState(auth);
   const [reservations, setReservations] = useState();
-  const navigate = useNavigate();  
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (loading) return;
@@ -114,7 +118,11 @@ const ViewPage = () => {
 
   return (
     <Fragment>
-      {/* Using Dummy Data */}
+      <div className="d-flex justify-content-md-center">
+        <Link to="/reserve">
+          <button className={styles.reserveBtn}>Make a Reservation</button>
+        </Link>
+      </div>
       {user && (
         <Container className={styles.checkAlign}>
           <div>
