@@ -6,11 +6,10 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
-import axios from "axios";
-import { createToken, auth } from "../../../../firebase.js";
+import { auth } from "../../../../firebase.js";
 import { v4 as uuid } from "uuid";
+import { addToReservationDB } from "../../../../Services/reservationServices.js"
 
-const url = process.env.REACT_APP_FIREBASE_POST_URL + "reservations";
 
 const ReservationForm = (props) => {
   const [startDate, setStartDate] = useState(
@@ -74,42 +73,13 @@ const ReservationForm = (props) => {
     setFormValues({ ...formValues, [name]: value });
   };
 
-  const addToReservationDB = async (
-    reservationId,
-    parkingSpotId,
-    userId,
-    licensePlate,
-    reservationDate,
-    time,
-    isCheckedIn
-  ) => {
-    const header = await createToken();
-    const payload = {
-      reservationId,
-      parkingSpotId,
-      userId,
-      licensePlate,
-      reservationDate,
-      time,
-      isCheckedIn,
-    };
-    try {
-      const res = await axios.post(url, payload, header);
-      return res.data;
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
   const user = auth.currentUser;
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const errors = validate(formValues);
     setFormErrors(errors);
     console.log(formValues);
     if (Object.keys(formErrors).length === 0) {
-      // check if there are no errors
       const reservationId = uuid();
       const parkingSpotId = parkingSpot;
       const userId = user.uid;
@@ -117,14 +87,6 @@ const ReservationForm = (props) => {
       const reservationDate = startDate;
       const time = reservationDate.getHours();
       const isCheckedIn = false;
-      /*
-      console.log(reservationId);
-      console.log(parkingSpotId);
-      console.log(userId);
-      console.log(license);
-      console.log(date);
-      console.log(time);
-      */
       try {
         addToReservationDB(
           reservationId,
@@ -152,7 +114,6 @@ const ReservationForm = (props) => {
   const validate = (values) => {
     const errors = {};
     const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-    //const timeFormat = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
     if (!values.firstName) {
       errors.firstName = "First Name Required!";
     }
@@ -165,20 +126,6 @@ const ReservationForm = (props) => {
       errors.email = "Invalid Email Address";
     }
 
-    // can only pick valid times so not necessary
-    /* 
-    if (!values.arrive) {
-      errors.arrive = "Arrival Time required";
-    } else if (!timeFormat.test(values.arrive)) {
-      errors.arrive = "Invalid Arrival Time";
-    }
-    // doesn't really need to exist
-    if (!values.depart) {
-      errors.depart = "Departure Time Required!";
-    } else if (!timeFormat.test(values.depart)) {
-      errors.depart = "Invalid Departure Time";
-    }
-    */
 
     if (!values.license) {
       errors.license = "License Plate Required!";

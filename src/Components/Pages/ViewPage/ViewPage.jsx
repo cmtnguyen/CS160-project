@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import { auth } from "../../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
+import { getAllReservations, checkIntoReservation, cancelReservation} from "../../../Services/reservationServices.js"
 import styles from "./ViewPage.module.css";
 
+/*
 const DUMMY_RESERVATIONS = [
   {
     reservationId: "1a",
@@ -26,7 +28,7 @@ const DUMMY_RESERVATIONS = [
     isCheckedIn: true,
   },
 ];
-
+*/
 const Reservation = ({ reservation, onCancel, onCheckIn }) => {
   return (
     <div>
@@ -63,19 +65,36 @@ const Reservation = ({ reservation, onCancel, onCheckIn }) => {
 
 const ViewPage = () => {
   const [user, loading] = useAuthState(auth);
-  const [reservations, setReservations] = useState(DUMMY_RESERVATIONS);
-  const navigate = useNavigate();
+  const [reservations, setReservations] = useState();
+  const navigate = useNavigate();  
 
   useEffect(() => {
     if (loading) return;
     if (!user) return navigate("/login");
   }, [user, loading, navigate]);
 
+  useEffect(() => {
+    const fetchReservations = async () => {
+      const fetchedReservations = await getAllReservations();
+      setReservations(fetchedReservations);
+    };
+    fetchReservations();
+  }, []);
+  if (reservations === undefined) {
+    return null;
+  }
+
   const checkInHandler = (id) => {
     const newReservations = [...reservations];
     newReservations.find(
       (reservation) => reservation.reservationId === id
     ).isCheckedIn = true;
+    try {
+      checkIntoReservation(id);
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
+    }
     setReservations(newReservations);
   };
 
@@ -84,6 +103,12 @@ const ViewPage = () => {
       (reservation) => reservation.reservationId !== id
     );
     console.log(id);
+    try {
+      cancelReservation(id);
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
+    }
     setReservations(newList);
   };
 
