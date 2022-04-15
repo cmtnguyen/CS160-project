@@ -1,49 +1,52 @@
 /* styles */
-.checkAlign{
-    border-radius: 5px;
-    background-color: var(--light-grey);
-    width:70%;
-    height: max-content;
-    overflow: hidden;
- }
-
- .checkTitle{
-    text-align: center;
-    color: var(--black);
+.checkAlign {
+  border-radius: 5px;
+  background-color: var(--light-grey);
+  width: 70%;
+  height: max-content;
+  overflow: hidden;
 }
 
-.checkInputBox{
-    border-radius: 10px;
-    background: var(--main-white);
-    border-color: var(--black);
-    padding: 10px;
-    width: 500px;
-    height: 30px;
-    margin-left: 10px;
+.checkTitle {
+  text-align: center;
+  color: var(--black);
 }
 
-.checkBtn{
-    margin-left: 300px;
-    width: max-content;
-    margin-top: 30px;
-    background-color: var(--main-accent);
-    color: var(--main-white);
-    padding: 0.5rem 2.5rem;
-    border-radius: 10px;
+.contains {
+  margin-left: 8rem;
 }
 
-.columnGap{
-    column-gap: 1px;
-    margin-left: 200px;
-    margin-top: 10px;
-    margin-left: 200px;
+.checkInputBox {
+  border-radius: 10px;
+  background: var(--main-white);
+  border-color: var(--black);
+  padding: 10px;
+  width: 500px;
+  height: 30px;
+  margin-left: 10px;
 }
 
-.reserveBtn{
-    width: max-content;
-    background-color: var(--main-accent);
-    color: var(--main-white);
-    padding: 0.5rem 2.5rem;
-    border-radius: 10px;
-    padding-bottom: 1.5rem;
+.checkBtn {
+  width: max-content;
+  background-color: var(--main-accent);
+  color: var(--main-white);
+  padding: 0.5rem 2.5rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.columnGap {
+  column-gap: 1px;
+  margin-left: 200px;
+  margin-top: 10px;
+  margin-left: 200px;
+}
+
+.reserveBtn {
+  width: max-content;
+  background-color: var(--main-accent);
+  color: var(--main-white);
+  padding: 0.5rem 2.5rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
 }

@@ -36,15 +36,15 @@ const DUMMY_RESERVATIONS = [
 const Reservation = ({ reservation, onCancel, onCheckIn }) => {
   return (
     <div>
-      <p>Reservation Number:{reservation.reservationId}</p>
-      <p>Parking Spot:{reservation.parkingSpotId}</p>
-      <p>License Plate:{reservation.licensePlate}</p>
-      <p>Reservation Date:{reservation.reservationDate}</p>
-      <p>Reservation Time:{reservation.time}</p>
+      <p>Reservation Number: {reservation.reservationId}</p>
+      <p>Parking Spot: {reservation.parkingSpotId}</p>
+      <p>License Plate: {reservation.licensePlate}</p>
+      <p>Reservation Date: {reservation.reservationDate}</p>
+      <p>Reservation Time: {reservation.time}</p>
       {reservation.isCheckedIn && <h3>YOU'RE CHECKED-IN!</h3>}
       {!reservation.isCheckedIn && (
-        <Row>
-          <Col xs={2}>
+        <Row className={styles.contains}>
+          <Col>
             <button
               value={reservation.id}
               className={styles.checkBtn}
@@ -53,7 +53,7 @@ const Reservation = ({ reservation, onCancel, onCheckIn }) => {
               Check-In
             </button>
           </Col>
-          <Col xs={2}>
+          <Col>
             <button
               className={styles.checkBtn}
               onClick={() => onCancel(reservation.reservationId)}
