@@ -3,8 +3,12 @@ import { Row, Col, Container } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { auth } from "../../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useNavigate } from "react-router-dom";
-import { getAllReservations, checkIntoReservation, cancelReservation} from "../../../Services/reservationServices.js"
+import { useNavigate, Link } from "react-router-dom";
+import {
+  getAllReservations,
+  checkIntoReservation,
+  cancelReservation,
+} from "../../../Services/reservationServices.js";
 import styles from "./ViewPage.module.css";
 
 /*
@@ -32,24 +36,24 @@ const DUMMY_RESERVATIONS = [
 const Reservation = ({ reservation, onCancel, onCheckIn }) => {
   return (
     <div>
-      <p>Reservation Number:{reservation.reservationId}</p>
-      <p>Parking Spot:{reservation.parkingSpotId}</p>
-      <p>License Plate:{reservation.licensePlate}</p>
-      <p>Reservation Date:{reservation.reservationDate}</p>
-      <p>Reservation Time:{reservation.time}</p>
+      <p>Reservation Number: {reservation.reservationId}</p>
+      <p>Parking Spot: {reservation.parkingSpotId}</p>
+      <p>License Plate: {reservation.licensePlate}</p>
+      <p>Reservation Date: {reservation.reservationDate}</p>
+      <p>Reservation Time: {reservation.time}</p>
       {reservation.isCheckedIn && <h3>YOU'RE CHECKED-IN!</h3>}
       {!reservation.isCheckedIn && (
-        <Row>
-          <Col xs={2}>
+        <Row className={styles.contains}>
+          <Col>
             <button
               value={reservation.id}
               className={styles.checkBtn}
               onClick={() => onCheckIn(reservation.reservationId)}
             >
-              Check In
+              Check-In
             </button>
           </Col>
-          <Col xs={2}>
+          <Col>
             <button
               className={styles.checkBtn}
               onClick={() => onCancel(reservation.reservationId)}
@@ -66,7 +70,7 @@ const Reservation = ({ reservation, onCancel, onCheckIn }) => {
 const ViewPage = () => {
   const [user, loading] = useAuthState(auth);
   const [reservations, setReservations] = useState();
-  const navigate = useNavigate();  
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (loading) return;
@@ -79,9 +83,15 @@ const ViewPage = () => {
       setReservations(fetchedReservations);
     };
     fetchReservations();
-  }, []);
+  }, [user]);
   if (reservations === undefined) {
-    return null;
+    return (
+      <div className="d-flex justify-content-md-center">
+        <Link to="/reserve">
+          <button className={styles.reserveBtn}>Make a Reservation</button>
+        </Link>
+      </div>
+    );
   }
 
   const checkInHandler = (id) => {
@@ -114,7 +124,11 @@ const ViewPage = () => {
 
   return (
     <Fragment>
-      {/* Using Dummy Data */}
+      <div className="d-flex justify-content-md-center">
+        <Link to="/reserve">
+          <button className={styles.reserveBtn}>Make a Reservation</button>
+        </Link>
+      </div>
       {user && (
         <Container className={styles.checkAlign}>
           <div>
