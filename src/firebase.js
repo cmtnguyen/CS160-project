@@ -51,7 +51,7 @@ export const createToken = async () => {
   return payloadHeader;
 };
 
-const userUrl = process.env.REACT_APP_FIREBASE_POST_URL + "users";
+const userUrl = process.env.REACT_APP_FIREBASE_POST_URL;
 const addToUserDB = async (uid, name, email, isEmployee) => {
   const header = await createToken();
   const payload = {
