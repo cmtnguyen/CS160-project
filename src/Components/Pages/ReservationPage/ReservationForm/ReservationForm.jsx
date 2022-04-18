@@ -8,39 +8,43 @@ import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
 import { auth } from "../../../../firebase.js";
 import { v4 as uuid } from "uuid";
-import { addToReservationDB } from "../../../../Services/reservationServices.js"
+import {
+  addToReservationDB,
+  getReservationByDate,
+} from "../../../../Services/reservationServices.js";
 
+//should prob move to new file later
+const ParkingSpot = ({ parkValue, isReserved, onClickHandler }) => {
+  return (
+    <Col>
+      <button
+        className={isReserved ? styles.parkingSpot2 : styles.parkingSpot}
+        disabled={isReserved ? true : false}
+        type="button"
+        onClick={onClickHandler}
+        value={parkValue}
+      >
+        {parkValue}
+      </button>
+    </Col>
+  );
+};
 
 const ReservationForm = (props) => {
   const [startDate, setStartDate] = useState(
     setHours(setMinutes(new Date(), 0), new Date().getHours() + 1)
   );
+  const [reservedDates, setReservedDates] = useState([]);
   const componentRef = useRef("null");
   const filterPassedTime = (time) => {
     const currentDate = new Date();
     const selectedDate = new Date(time);
-
     return currentDate.getTime() < selectedDate.getTime();
   };
 
-  const parkValues = {
-    A: "A",
-    B: "B",
-    C: "C",
-    D: "D",
-    E: "E",
-    F: "F",
-    G: "G",
-    H: "H",
-    I: "I",
-    J: "J",
-    K: "K",
-    L: "L",
-    M: "M",
-    N: "N",
-    O: "O",
-    P: "P",
-  };
+  const parkValuesRow1 = ["A", "B", "C", "D", "E", "F", "G", "H"];
+
+  const parkValuesRow2 = ["I", "J", "K", "L", "M", "N", "O", "P"];
 
   const onClickHandler = (e) => {
     componentRef.current.value = e.target.value;
@@ -73,13 +77,23 @@ const ReservationForm = (props) => {
     setFormValues({ ...formValues, [name]: value });
   };
 
+  const fetchReservedReservations = async () => {
+    const reservedReservations = await getReservationByDate(
+      startDate.toISOString().substring(0, 13) + ":00:00.000+00:00"
+    );
+    const reservedSpotIds = reservedReservations.map(
+      (reservation) => reservation.parkingSpotId
+    );
+    setReservedDates(reservedSpotIds);
+  };
+
   const user = auth.currentUser;
   const handleSubmit = (e) => {
     e.preventDefault();
     const errors = validate(formValues);
     setFormErrors(errors);
     console.log(formValues);
-    if (Object.keys(formErrors).length === 0) {
+    if (Object.keys(errors).length === 0) {
       const reservationId = uuid();
       const parkingSpotId = parkingSpot;
       const userId = user.uid;
@@ -97,6 +111,7 @@ const ReservationForm = (props) => {
           time,
           isCheckedIn
         );
+        fetchReservedReservations();
       } catch (err) {
         console.error(err);
         alert(err.message);
@@ -104,6 +119,11 @@ const ReservationForm = (props) => {
     }
     setIsSubmit(true);
   };
+
+  useEffect(() => {
+    fetchReservedReservations();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [startDate, isSubmit]);
 
   useEffect(() => {
     if (Object.keys(formErrors).length === 0 && isSubmit) {
@@ -125,10 +145,11 @@ const ReservationForm = (props) => {
     } else if (!emailFormat.test(values.email)) {
       errors.email = "Invalid Email Address";
     }
-
-
     if (!values.license) {
       errors.license = "License Plate Required!";
+    }
+    if (!parkingSpot) {
+      errors.parkingSpot = "Parking Spot Required!";
     }
     return errors;
   };
@@ -282,168 +303,22 @@ const ReservationForm = (props) => {
         {/* Garage Floor Image*/}
         <Container className={styles.garageFloor}>
           <Row>
-            <Col>
-              <button
-                className={styles.parkingSpot}
-                type="button"
-                onClick={onClickHandler}
-                value={parkValues.A}
-              >
-                A
-              </button>
-            </Col>
-            <Col>
-              <button
-                className={styles.parkingSpot}
-                type="button"
-                onClick={onClickHandler}
-                value={parkValues.B}
-              >
-                B
-              </button>
-            </Col>
-            <Col>
-              <button
-                className={styles.parkingSpot}
-                type="button"
-                onClick={onClickHandler}
-                value={parkValues.C}
-              >
-                C
-              </button>
-            </Col>
-            <Col>
-              <button
-                className={styles.parkingSpot}
-                type="button"
-                onClick={onClickHandler}
-                value={parkValues.D}
-              >
-                D
-              </button>
-            </Col>
-            <Col>
-              <button
-                className={styles.parkingSpot}
-                type="button"
-                onClick={onClickHandler}
-                value={parkValues.E}
-              >
-                E
-              </button>
-            </Col>
-            <Col>
-              <button
-                className={styles.parkingSpot}
-                type="button"
-                onClick={onClickHandler}
-                value={parkValues.F}
-              >
-                F
-              </button>
-            </Col>
-            <Col>
-              <button
-                className={styles.parkingSpot}
-                type="button"
-                onClick={onClickHandler}
-                value={parkValues.G}
-              >
-                G
-              </button>
-            </Col>
-            <Col>
-              <button
-                className={styles.parkingSpot}
-                type="button"
-                onClick={onClickHandler}
-                value={parkValues.H}
-              >
-                H
-              </button>
-            </Col>
+            {parkValuesRow1.map((parkValue) => (
+              <ParkingSpot
+                parkValue={parkValue}
+                isReserved={reservedDates.includes(parkValue)}
+                onClickHandler={onClickHandler}
+              />
+            ))}
           </Row>
           <Row>
-            <Col>
-              <button
-                className={styles.parkingSpot}
-                type="button"
-                onClick={onClickHandler}
-                value={parkValues.I}
-              >
-                I
-              </button>
-            </Col>
-            <Col>
-              <button
-                className={styles.parkingSpot}
-                type="button"
-                onClick={onClickHandler}
-                value={parkValues.J}
-              >
-                J
-              </button>
-            </Col>
-            <Col>
-              <button
-                className={styles.parkingSpot}
-                type="button"
-                onClick={onClickHandler}
-                value={parkValues.K}
-              >
-                K
-              </button>
-            </Col>
-            <Col>
-              <button
-                className={styles.parkingSpot}
-                type="button"
-                onClick={onClickHandler}
-                value={parkValues.L}
-              >
-                L
-              </button>
-            </Col>
-            <Col>
-              <button
-                className={styles.parkingSpot}
-                type="button"
-                onClick={onClickHandler}
-                value={parkValues.M}
-              >
-                M
-              </button>
-            </Col>
-            <Col>
-              <button
-                className={styles.parkingSpot}
-                type="button"
-                onClick={onClickHandler}
-                value={parkValues.N}
-              >
-                N
-              </button>
-            </Col>
-            <Col>
-              <button
-                className={styles.parkingSpot}
-                type="button"
-                onClick={onClickHandler}
-                value={parkValues.O}
-              >
-                O
-              </button>
-            </Col>
-            <Col>
-              <button
-                className={styles.parkingSpot}
-                type="button"
-                onClick={onClickHandler}
-                value={parkValues.P}
-              >
-                P
-              </button>
-            </Col>
+            {parkValuesRow2.map((parkValue) => (
+              <ParkingSpot
+                parkValue={parkValue}
+                isReserved={reservedDates.includes(parkValue)}
+                onClickHandler={onClickHandler}
+              />
+            ))}
           </Row>
         </Container>
         <button className={styles.reservationBtn}>Reserve</button>

@@ -5,6 +5,7 @@ const baseUrl = process.env.REACT_APP_FIREBASE_POST_URL;
 const resUrl = baseUrl + "reservations/";
 const resByResIdUrl = resUrl + "reservationId/";
 const resByUserIdUrl = resUrl + "userId/";
+const resByDateUrl = resUrl + "date/";
 
 export const addToReservationDB = async (
   reservationId,
@@ -42,6 +43,20 @@ export const getAllReservations = async () => {
     console.error(e);
   }
 };
+
+export const getReservationByDate = async (date) => {
+  const header = await createToken();
+
+  try{
+    const res = await axios.get(resByDateUrl + date, header);
+    return res.data;
+  }
+
+  catch(e) {
+    console.error(e);
+  }
+
+}
 
 export const checkIntoReservation = async (reservationId) => {
   const header = await createToken();

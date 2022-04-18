@@ -11,36 +11,31 @@ import {
 } from "../../../Services/reservationServices.js";
 import styles from "./ViewPage.module.css";
 
-/*
-const DUMMY_RESERVATIONS = [
-  {
-    reservationId: "1a",
-    parkingSpotId: "A",
-    userId: "Your mom",
-    licensePlate: "123EyesO",
-    reservationDate: "10-10-1000",
-    time: "07:10",
-    isCheckedIn: false,
-  },
-  {
-    reservationId: "2b",
-    parkingSpotId: "A",
-    userId: "Your mom",
-    licensePlate: "123EyesO",
-    reservationDate: "10-11-1000",
-    time: "09:10",
-    isCheckedIn: true,
-  },
-];
-*/
 const Reservation = ({ reservation, onCancel, onCheckIn }) => {
+  // formatting date and time
+  const weekday = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const resDate = new Date(reservation.reservationDate);
+  const justDate =
+    weekday[resDate.getDay()] + " " + resDate.toLocaleDateString();
+  const justTime =
+    militaryToStandardTime(reservation.time) +
+    " - " +
+    militaryToStandardTime(reservation.time + 1);
   return (
     <div>
       <p>Reservation Number: {reservation.reservationId}</p>
       <p>Parking Spot: {reservation.parkingSpotId}</p>
       <p>License Plate: {reservation.licensePlate}</p>
-      <p>Reservation Date: {reservation.reservationDate}</p>
-      <p>Reservation Time: {reservation.time}</p>
+      <p>Reservation Date: {justDate}</p>
+      <p>Reservation Time: {justTime}</p>
       {reservation.isCheckedIn && <h3>YOU'RE CHECKED-IN!</h3>}
       {!reservation.isCheckedIn && (
         <Row className={styles.contains}>
@@ -67,6 +62,15 @@ const Reservation = ({ reservation, onCancel, onCheckIn }) => {
   );
 };
 
+const militaryToStandardTime = (time) => {
+  if (time === 0 || time === 24) {
+    return "12:00 AM";
+  } else if (time > 0 && time < 13) {
+    return time + ":00 AM";
+  } else {
+    return time - 12 + ":00 PM";
+  }
+};
 const ViewPage = () => {
   const [user, loading] = useAuthState(auth);
   const [reservations, setReservations] = useState();
