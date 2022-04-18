@@ -8,13 +8,13 @@ import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
 import { auth } from "../../../../firebase.js";
 import { v4 as uuid } from "uuid";
-import { 
-  addToReservationDB, 
-  getReservationByDate 
-} from "../../../../Services/reservationServices.js"
+import {
+  addToReservationDB,
+  getReservationByDate,
+} from "../../../../Services/reservationServices.js";
 
 //should prob move to new file later
-const ParkingSpot = ({parkValue, isReserved, onClickHandler}) => {
+const ParkingSpot = ({ parkValue, isReserved, onClickHandler }) => {
   return (
     <Col>
       <button
@@ -22,12 +22,13 @@ const ParkingSpot = ({parkValue, isReserved, onClickHandler}) => {
         disabled={isReserved ? true : false}
         type="button"
         onClick={onClickHandler}
-        value={parkValue}>
+        value={parkValue}
+      >
         {parkValue}
       </button>
     </Col>
-  )
-}
+  );
+};
 
 const ReservationForm = (props) => {
   const [startDate, setStartDate] = useState(
@@ -38,31 +39,12 @@ const ReservationForm = (props) => {
   const filterPassedTime = (time) => {
     const currentDate = new Date();
     const selectedDate = new Date(time);
-
     return currentDate.getTime() < selectedDate.getTime();
   };
 
-  const parkValuesRow1 = [
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H"
-  ];
+  const parkValuesRow1 = ["A", "B", "C", "D", "E", "F", "G", "H"];
 
-  const parkValuesRow2 = [
-    "I",
-    "J",
-    "K",
-    "L",
-    "M",
-    "N",
-    "O",
-    "P",
-  ];
+  const parkValuesRow2 = ["I", "J", "K", "L", "M", "N", "O", "P"];
 
   const onClickHandler = (e) => {
     componentRef.current.value = e.target.value;
@@ -96,10 +78,14 @@ const ReservationForm = (props) => {
   };
 
   const fetchReservedReservations = async () => {
-    const reservedReservations = await getReservationByDate(startDate.toISOString().substring(0,13) + ":00:00.000+00:00"); 
-    const reservedSpotIds = reservedReservations.map((reservation) => reservation.parkingSpotId)
+    const reservedReservations = await getReservationByDate(
+      startDate.toISOString().substring(0, 13) + ":00:00.000+00:00"
+    );
+    const reservedSpotIds = reservedReservations.map(
+      (reservation) => reservation.parkingSpotId
+    );
     setReservedDates(reservedSpotIds);
-  }
+  };
 
   const user = auth.currentUser;
   const handleSubmit = (e) => {
@@ -107,7 +93,7 @@ const ReservationForm = (props) => {
     const errors = validate(formValues);
     setFormErrors(errors);
     console.log(formValues);
-    if (Object.keys(formErrors).length === 0) {
+    if (Object.keys(errors).length === 0) {
       const reservationId = uuid();
       const parkingSpotId = parkingSpot;
       const userId = user.uid;
@@ -137,7 +123,7 @@ const ReservationForm = (props) => {
   useEffect(() => {
     fetchReservedReservations();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [startDate, isSubmit])
+  }, [startDate, isSubmit]);
 
   useEffect(() => {
     if (Object.keys(formErrors).length === 0 && isSubmit) {
@@ -159,10 +145,11 @@ const ReservationForm = (props) => {
     } else if (!emailFormat.test(values.email)) {
       errors.email = "Invalid Email Address";
     }
-
-
     if (!values.license) {
       errors.license = "License Plate Required!";
+    }
+    if (!parkingSpot) {
+      errors.parkingSpot = "Parking Spot Required!";
     }
     return errors;
   };
@@ -317,18 +304,20 @@ const ReservationForm = (props) => {
         <Container className={styles.garageFloor}>
           <Row>
             {parkValuesRow1.map((parkValue) => (
-              <ParkingSpot 
-              parkValue={parkValue} 
-              isReserved={reservedDates.includes(parkValue)}
-              onClickHandler={onClickHandler} />
+              <ParkingSpot
+                parkValue={parkValue}
+                isReserved={reservedDates.includes(parkValue)}
+                onClickHandler={onClickHandler}
+              />
             ))}
           </Row>
           <Row>
             {parkValuesRow2.map((parkValue) => (
-              <ParkingSpot 
-              parkValue={parkValue} 
-              isReserved={reservedDates.includes(parkValue)}
-              onClickHandler={onClickHandler} />
+              <ParkingSpot
+                parkValue={parkValue}
+                isReserved={reservedDates.includes(parkValue)}
+                onClickHandler={onClickHandler}
+              />
             ))}
           </Row>
         </Container>

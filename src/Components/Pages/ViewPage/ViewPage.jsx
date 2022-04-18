@@ -23,8 +23,12 @@ const Reservation = ({ reservation, onCancel, onCheckIn }) => {
     "Saturday",
   ];
   const resDate = new Date(reservation.reservationDate);
-  const justDate = weekday[resDate.getDay()] + " " + resDate.toLocaleDateString();
-  const justTime = militaryToStandardTime(reservation.time) + " - " + militaryToStandardTime(reservation.time + 1);
+  const justDate =
+    weekday[resDate.getDay()] + " " + resDate.toLocaleDateString();
+  const justTime =
+    militaryToStandardTime(reservation.time) +
+    " - " +
+    militaryToStandardTime(reservation.time + 1);
   return (
     <div>
       <p>Reservation Number: {reservation.reservationId}</p>
@@ -59,7 +63,7 @@ const Reservation = ({ reservation, onCancel, onCheckIn }) => {
 };
 
 const militaryToStandardTime = (time) => {
-  if (time === 0) {
+  if (time === 0 || time === 24) {
     return "12:00 AM";
   } else if (time > 0 && time < 13) {
     return time + ":00 AM";
