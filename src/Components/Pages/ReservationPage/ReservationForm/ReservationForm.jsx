@@ -95,6 +95,12 @@ const ReservationForm = (props) => {
     setFormValues({ ...formValues, [name]: value });
   };
 
+  const fetchReservedReservations = async () => {
+    const reservedReservations = await getReservationByDate(startDate.toISOString().substring(0,13) + ":00:00.000+00:00"); 
+    const reservedSpotIds = reservedReservations.map((reservation) => reservation.parkingSpotId)
+    setReservedDates(reservedSpotIds);
+  }
+
   const user = auth.currentUser;
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -119,6 +125,7 @@ const ReservationForm = (props) => {
           time,
           isCheckedIn
         );
+        fetchReservedReservations();
       } catch (err) {
         console.error(err);
         alert(err.message);
@@ -128,12 +135,8 @@ const ReservationForm = (props) => {
   };
 
   useEffect(() => {
-    const fetchReservedReservations = async () => {
-      const reservedReservations = await getReservationByDate(startDate.toISOString());
-      const reservedSpotIds = reservedReservations.map((reservation) => reservation.parkingSpotId)
-      setReservedDates(reservedSpotIds);
-    }
     fetchReservedReservations();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startDate, isSubmit])
 
   useEffect(() => {
