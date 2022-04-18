@@ -184,10 +184,6 @@ const ReservationForm = (props) => {
    if (!values.license) {
      errors.license = "License Plate Required!";
    }
-   if(!componentRef.current.value)
-   {
-     errors.parkingSpot = "Parking Spot Required!";
-   }
    if(formValues.firstName && formValues.lastName && formValues.email && formValues.license && componentRef.current.value)
    {
      formValues.firstName = "";
