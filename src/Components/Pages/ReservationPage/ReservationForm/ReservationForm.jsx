@@ -90,9 +90,10 @@ const ReservationForm = (props) => {
   const user = auth.currentUser;
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("1: ", formValues);
     const errors = validate(formValues);
     setFormErrors(errors);
-    console.log(formValues);
+    console.log("2: ", formValues);
     if (Object.keys(errors).length === 0) {
       const reservationId = uuid();
       const parkingSpotId = parkingSpot;
@@ -116,6 +117,7 @@ const ReservationForm = (props) => {
         console.error(err);
         alert(err.message);
       }
+      clearValues(formValues);
     }
     setIsSubmit(true);
   };
@@ -151,17 +153,20 @@ const ReservationForm = (props) => {
     if (!parkingSpot) {
       errors.parkingSpot = "Parking Spot Required!";
     }
-    if(formValues.firstName && formValues.lastName && formValues.email && formValues.license && componentRef.current.value)
-    {
-      formValues.firstName = "";
-      formValues.lastName = "";
-      formValues.email = "";
-      formValues.license = "";
-      setStartDate(setHours(setMinutes(new Date(), 0), new Date().getHours() + 1));
-      componentRef.current.value = "";
-    } 
+
     return errors;
   };
+
+  const clearValues = (values) => {
+    formValues.firstName = "";
+    formValues.lastName = "";
+    formValues.email = "";
+    formValues.license = "";
+    setStartDate(setHours(setMinutes(new Date(), 0), new Date().getHours() + 1));
+    setParkingSpot(null);
+    componentRef.current.value = "";
+  };
+  
   return (
     <form onSubmit={handleSubmit}>
       {/*Reservation Page */}
