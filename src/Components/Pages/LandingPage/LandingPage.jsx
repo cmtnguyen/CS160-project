@@ -45,10 +45,18 @@ const LandingPage = () => {
 
         <footer className={styles.footer}>
           <p>Already Reserved a Spot?</p>
-          <Button href="/cancel" variant="danger" className={styles.cancel}>
+          <Button
+            href="/reservations"
+            variant="danger"
+            className={styles.cancel}
+          >
             Cancel Reservation
           </Button>
-          <Button href="/checkIn" variant="success" className={styles.checkIn}>
+          <Button
+            href="/reservations"
+            variant="success"
+            className={styles.checkIn}
+          >
             Check-In
           </Button>
         </footer>

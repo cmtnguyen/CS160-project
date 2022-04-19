@@ -151,6 +151,15 @@ const ReservationForm = (props) => {
     if (!parkingSpot) {
       errors.parkingSpot = "Parking Spot Required!";
     }
+    if(formValues.firstName && formValues.lastName && formValues.email && formValues.license && componentRef.current.value)
+    {
+      formValues.firstName = "";
+      formValues.lastName = "";
+      formValues.email = "";
+      formValues.license = "";
+      setStartDate(setHours(setMinutes(new Date(), 0), new Date().getHours() + 1));
+      componentRef.current.value = "";
+    } 
     return errors;
   };
   return (
@@ -328,3 +337,5 @@ const ReservationForm = (props) => {
   );
 };
 export default ReservationForm;
+ 
+
