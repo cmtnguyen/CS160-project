@@ -3,7 +3,7 @@ import { Row, Col, Container } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { auth } from "../../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   getAllReservations,
   checkIntoReservation,
@@ -72,14 +72,8 @@ const militaryToStandardTime = (time) => {
   }
 };
 const ViewPage = () => {
-  const [user, loading] = useAuthState(auth);
+  const [user] = useAuthState(auth);
   const [reservations, setReservations] = useState();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (loading) return;
-    if (!user) return navigate("/login");
-  }, [user, loading, navigate]);
 
   useEffect(() => {
     const fetchReservations = async () => {
@@ -88,15 +82,6 @@ const ViewPage = () => {
     };
     fetchReservations();
   }, [user]);
-  if (reservations === undefined) {
-    return (
-      <div className="d-flex justify-content-md-center">
-        <Link to="/reserve">
-          <button className={styles.reserveBtn}>Make a Reservation</button>
-        </Link>
-      </div>
-    );
-  }
 
   const checkInHandler = (id) => {
     const newReservations = [...reservations];
@@ -133,7 +118,7 @@ const ViewPage = () => {
           <button className={styles.reserveBtn}>Make a Reservation</button>
         </Link>
       </div>
-      {user && (
+      {reservations && (
         <Container className={styles.checkAlign}>
           <div>
             {reservations.map((reservation) => (
