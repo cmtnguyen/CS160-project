@@ -12,19 +12,24 @@ import EmployeeNav from './Components/Navbars/EmployeeNavbar';
 import ViewViolation from './Components/EmployeePages/ViewViolationPage';
 import ViewCheckIn from "./Components/EmployeePages/ViewCheckInPage";
 
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "./firebase";
+
 
 function App() {
+  const [user] = useAuthState(auth);
+  const reroute = <Navigate replace to="/login" />;
   return (
     // Routes for website
     // <Route path="/PAGELINK" element={<PAGE />} />
-    // need to implement employee checker to display correct navbar
+    // need to implement employee checker to display correct navbar and employee pages
     <Router>
       {true ? <Navbar /> : <EmployeeNav />}
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/reserve" element={<Reserve />} />
-        <Route path="/reservations" element={<View />} />
+        <Route path="/reserve" element={user ? <Reserve /> : reroute} />
+        <Route path="/reservations" element={user ? <View /> : reroute} />
         <Route path="/report" element={<Report />} />
         <Route path="/employee/viewreport" element={<ViewViolation />} />
         <Route path="/employee/viewcheckin" element={<ViewCheckIn />} />
