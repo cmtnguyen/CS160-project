@@ -65,8 +65,10 @@ const Reservation = ({ reservation, onCancel, onCheckIn }) => {
 const militaryToStandardTime = (time) => {
   if (time === 0 || time === 24) {
     return "12:00 AM";
-  } else if (time > 0 && time < 13) {
+  } else if (time > 0 && time < 12) {
     return time + ":00 AM";
+  } else if (time === 12) {
+    return time + ":00 PM";
   } else {
     return time - 12 + ":00 PM";
   }
@@ -78,7 +80,14 @@ const ViewPage = () => {
   useEffect(() => {
     const fetchReservations = async () => {
       const fetchedReservations = await getAllReservations();
-      setReservations(fetchedReservations);
+      const currentDate = new Date();
+      // filtering reservations to exclude those past departure date
+      const filteredReservations = (fetchedReservations || []).filter(function(reservation) {
+        const departureTime = new Date(reservation.reservationDate);
+        departureTime.setTime(departureTime.getTime() + (60 * 60 * 1000)); // add an hour to arrival time
+        return departureTime.getTime() > currentDate.getTime();
+      });
+      setReservations(filteredReservations);
     };
     fetchReservations();
   }, [user]);
