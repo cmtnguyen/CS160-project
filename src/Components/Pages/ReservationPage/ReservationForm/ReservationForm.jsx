@@ -34,6 +34,9 @@ const ReservationForm = (props) => {
   const [startDate, setStartDate] = useState(
     setHours(setMinutes(new Date(), 0), new Date().getHours() + 1)
   );
+  const [endDate, setEndDate] = useState(
+    setHours(setMinutes(startDate, 0), startDate.getHours() + 1)
+    );
   const [reservedDates, setReservedDates] = useState([]);
   const componentRef = useRef("null");
   const filterPassedTime = (time) => {
@@ -51,11 +54,11 @@ const ReservationForm = (props) => {
     setParkingSpot(e.target.value);
   };
 
-  function endDate() {
+  function lockDate() {
     var date = new Date();
     date = setHours(
       setMinutes(new Date(startDate), 0),
-      startDate.getHours() + 1
+      endDate.getHours()
     );
     return date;
   }
@@ -257,8 +260,13 @@ const ReservationForm = (props) => {
           <Col xs={5}>
             <DatePicker
               className={styles.datePicker}
-              selected={endDate()}
-              disabled
+              selected={lockDate()}
+              onChange={(date) => setEndDate(date)}
+              minDate={startDate}
+              maxDate={startDate}
+              minTime={setHours(setMinutes(startDate, 0), startDate.getHours() + 1)}
+              maxTime={setHours(setMinutes(startDate, 0), startDate.getHours() + 3)}
+              timeIntervals={60}
               showTimeSelect
               locale="en-US"
               dateFormat="MMMM d, yyyy h:mm aa"
