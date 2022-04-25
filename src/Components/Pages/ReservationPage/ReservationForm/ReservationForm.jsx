@@ -36,7 +36,7 @@ const ReservationForm = (props) => {
   );
   const [endDate, setEndDate] = useState(
     setHours(setMinutes(startDate, 0), startDate.getHours() + 1)
-    );
+  );
   const [reservedDates, setReservedDates] = useState([]);
   const componentRef = useRef("null");
   const filterPassedTime = (time) => {
@@ -53,15 +53,6 @@ const ReservationForm = (props) => {
     componentRef.current.value = e.target.value;
     setParkingSpot(e.target.value);
   };
-
-  function lockDate() {
-    var date = new Date();
-    date = setHours(
-      setMinutes(new Date(startDate), 0),
-      endDate.getHours()
-    );
-    return date;
-  }
 
   const initValues = {
     firstName: "",
@@ -165,11 +156,13 @@ const ReservationForm = (props) => {
     formValues.lastName = "";
     formValues.email = "";
     formValues.license = "";
-    setStartDate(setHours(setMinutes(new Date(), 0), new Date().getHours() + 1));
+    setStartDate(
+      setHours(setMinutes(new Date(), 0), new Date().getHours() + 1)
+    );
     setParkingSpot(null);
     componentRef.current.value = "";
   };
-  
+
   return (
     <form onSubmit={handleSubmit}>
       {/*Reservation Page */}
@@ -248,7 +241,10 @@ const ReservationForm = (props) => {
             <DatePicker
               className={styles.datePicker}
               selected={startDate}
-              onChange={(date) => setStartDate(date)}
+              onChange={(date) => {
+                setStartDate(date);
+                setEndDate(setHours(setMinutes(date, 0), date.getHours() + 1));
+              }}
               showTimeSelect
               filterTime={filterPassedTime}
               minDate={new Date()}
@@ -260,12 +256,18 @@ const ReservationForm = (props) => {
           <Col xs={5}>
             <DatePicker
               className={styles.datePicker}
-              selected={lockDate()}
+              selected={endDate}
               onChange={(date) => setEndDate(date)}
               minDate={startDate}
               maxDate={startDate}
-              minTime={setHours(setMinutes(startDate, 0), startDate.getHours() + 1)}
-              maxTime={setHours(setMinutes(startDate, 0), startDate.getHours() + 3)}
+              minTime={setHours(
+                setMinutes(startDate, 0),
+                startDate.getHours() + 1
+              )}
+              maxTime={setHours(
+                setMinutes(startDate, 0),
+                startDate.getHours() + 3
+              )}
               timeIntervals={60}
               showTimeSelect
               locale="en-US"
@@ -350,5 +352,3 @@ const ReservationForm = (props) => {
   );
 };
 export default ReservationForm;
- 
-
