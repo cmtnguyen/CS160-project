@@ -26,9 +26,9 @@ const Reservation = ({ reservation, onCancel, onCheckIn }) => {
   const justDate =
     weekday[resDate.getDay()] + " " + resDate.toLocaleDateString();
   const justTime =
-    militaryToStandardTime(reservation.time) +
+    militaryToStandardTime(resDate.getHours()) +
     " - " +
-    militaryToStandardTime(reservation.time + 1);
+    militaryToStandardTime(resDate.getHours() + reservation.time);
   return (
     <div>
       <p>Reservation Number: {reservation.reservationId}</p>
@@ -63,7 +63,10 @@ const Reservation = ({ reservation, onCancel, onCheckIn }) => {
 };
 
 const militaryToStandardTime = (time) => {
-  if (time === 0 || time === 24) {
+  if (time >= 24) {
+    time -= 24;
+  }
+  if (time === 0) {
     return "12:00 AM";
   } else if (time > 0 && time < 12) {
     return time + ":00 AM";
@@ -82,9 +85,13 @@ const ViewPage = () => {
       const fetchedReservations = await getAllReservations();
       const currentDate = new Date();
       // filtering reservations to exclude those past departure date
-      const filteredReservations = (fetchedReservations || []).filter(function(reservation) {
+      const filteredReservations = (fetchedReservations || []).filter(function (
+        reservation
+      ) {
         const departureTime = new Date(reservation.reservationDate);
-        departureTime.setTime(departureTime.getTime() + (60 * 60 * 1000)); // add an hour to arrival time
+        departureTime.setTime(
+          departureTime.getTime() + (reservation.time * 60 * 60 * 1000)
+        ); // add an hour to arrival time
         return departureTime.getTime() > currentDate.getTime();
       });
       setReservations(filteredReservations);

@@ -94,7 +94,11 @@ const ReservationForm = (props) => {
       const userId = user.uid;
       const licensePlate = formValues.license;
       const reservationDate = startDate;
-      const time = reservationDate.getHours();
+      let endHours = endDate.getHours();
+      if (endDate.getDay() > startDate.getDay()) {
+        endHours = endDate.getHours() + 24;
+      }
+      const time = endHours - reservationDate.getHours();
       const isCheckedIn = false;
       try {
         addToReservationDB(
@@ -241,6 +245,7 @@ const ReservationForm = (props) => {
             <DatePicker
               className={styles.datePicker}
               selected={startDate}
+              onChangeRaw={(e) => e.preventDefault()}
               onChange={(date) => {
                 setStartDate(date);
                 setEndDate(setHours(setMinutes(date, 0), date.getHours() + 1));
@@ -257,6 +262,7 @@ const ReservationForm = (props) => {
             <DatePicker
               className={styles.datePicker}
               selected={endDate}
+              onChangeRaw={(e) => e.preventDefault()}
               onChange={(date) => setEndDate(date)}
               minDate={startDate}
               maxDate={startDate}
