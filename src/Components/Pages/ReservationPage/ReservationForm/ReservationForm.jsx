@@ -163,6 +163,7 @@ const ReservationForm = (props) => {
     setStartDate(
       setHours(setMinutes(new Date(), 0), new Date().getHours() + 1)
     );
+    setEndDate(setHours(setMinutes(new Date(), 0), new Date().getHours() + 2));
     setParkingSpot(null);
     componentRef.current.value = "";
   };
