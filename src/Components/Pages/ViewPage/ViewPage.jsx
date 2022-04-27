@@ -11,7 +11,7 @@ import {
 } from "../../../Services/reservationServices.js";
 import styles from "./ViewPage.module.css";
 
-const Reservation = ({ reservation, onCancel, onCheckIn }) => {
+const Reservation = ({ reservation, onCancel, onCheckIn, onCheckOut }) => {
   // formatting date and time
   const weekday = [
     "Sunday",
@@ -26,9 +26,9 @@ const Reservation = ({ reservation, onCancel, onCheckIn }) => {
   const justDate =
     weekday[resDate.getDay()] + " " + resDate.toLocaleDateString();
   const justTime =
-    militaryToStandardTime(reservation.time) +
+    militaryToStandardTime(resDate.getHours()) +
     " - " +
-    militaryToStandardTime(reservation.time + 1);
+    militaryToStandardTime(resDate.getHours() + reservation.time);
   return (
     <div>
       <p>Reservation Number: {reservation.reservationId}</p>
@@ -36,7 +36,19 @@ const Reservation = ({ reservation, onCancel, onCheckIn }) => {
       <p>License Plate: {reservation.licensePlate}</p>
       <p>Reservation Date: {justDate}</p>
       <p>Reservation Time: {justTime}</p>
-      {reservation.isCheckedIn && <h3>YOU'RE CHECKED-IN!</h3>}
+      {reservation.isCheckedOut && (
+        <p className="text-center">SUCCESSFULLY CHECKED OUT</p>
+      )}
+      {reservation.isCheckedIn && !reservation.isCheckedOut && (
+        <div className="d-flex justify-content-center">
+          <button
+            className={styles.checkOutBtn}
+            onClick={() => onCheckOut(reservation.reservationId)}
+          >
+            Check-Out
+          </button>
+        </div>
+      )}
       {!reservation.isCheckedIn && (
         <Row className={styles.contains}>
           <Col>
@@ -63,7 +75,10 @@ const Reservation = ({ reservation, onCancel, onCheckIn }) => {
 };
 
 const militaryToStandardTime = (time) => {
-  if (time === 0 || time === 24) {
+  if (time >= 24) {
+    time -= 24;
+  }
+  if (time === 0) {
     return "12:00 AM";
   } else if (time > 0 && time < 12) {
     return time + ":00 AM";
@@ -82,9 +97,13 @@ const ViewPage = () => {
       const fetchedReservations = await getAllReservations();
       const currentDate = new Date();
       // filtering reservations to exclude those past departure date
-      const filteredReservations = (fetchedReservations || []).filter(function(reservation) {
+      const filteredReservations = (fetchedReservations || []).filter(function (
+        reservation
+      ) {
         const departureTime = new Date(reservation.reservationDate);
-        departureTime.setTime(departureTime.getTime() + (60 * 60 * 1000)); // add an hour to arrival time
+        departureTime.setTime(
+          departureTime.getTime() + reservation.time * 60 * 60 * 1000
+        ); // add an hour to arrival time
         return departureTime.getTime() > currentDate.getTime();
       });
       setReservations(filteredReservations);
@@ -106,11 +125,19 @@ const ViewPage = () => {
     setReservations(newReservations);
   };
 
+  const checkOutHandler = (id) => {
+    const newReservations = [...reservations];
+    newReservations.find(
+      (reservation) => reservation.reservationId === id
+    ).isCheckedOut = true;
+    setReservations(newReservations);
+  };
+
   const cancelHandler = (id) => {
     const newList = reservations.filter(
       (reservation) => reservation.reservationId !== id
     );
-    console.log(id);
+    //console.log(id);
     try {
       cancelReservation(id);
     } catch (err) {
@@ -122,7 +149,7 @@ const ViewPage = () => {
 
   return (
     <Fragment>
-      <div className="d-flex justify-content-md-center">
+      <div className="d-flex justify-content-center">
         <Link to="/reserve">
           <button className={styles.reserveBtn}>Make a Reservation</button>
         </Link>
@@ -136,6 +163,7 @@ const ViewPage = () => {
                 reservation={reservation}
                 onCancel={cancelHandler}
                 onCheckIn={checkInHandler}
+                onCheckOut={checkOutHandler}
               />
             ))}
           </div>

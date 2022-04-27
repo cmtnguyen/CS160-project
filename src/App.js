@@ -9,7 +9,6 @@ import Login from './Components/Pages/LoginPage/LoginPage';
 import Navbar from './Components/Navbars/Navbar';
 import EmployeeNav from './Components/Navbars/EmployeeNavbar';
 
-import ViewViolation from './Components/EmployeePages/ViewViolationPage';
 import ViewCheckIn from "./Components/EmployeePages/ViewCheckInPage";
 
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -31,7 +30,6 @@ function App() {
         <Route path="/reserve" element={user ? <Reserve /> : reroute} />
         <Route path="/reservations" element={user ? <View /> : reroute} />
         <Route path="/report" element={<Report />} />
-        <Route path="/employee/viewreport" element={<ViewViolation />} />
         <Route path="/employee/viewcheckin" element={<ViewCheckIn />} />
         <Route path="*" element={<Navigate replace to="/" />} />
       </Routes>

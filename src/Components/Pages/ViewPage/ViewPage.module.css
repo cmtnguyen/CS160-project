@@ -26,13 +26,17 @@
   margin-left: 10px;
 }
 
-.checkBtn {
+.checkBtn, .checkOutBtn {
   width: max-content;
   background-color: var(--main-accent);
   color: var(--main-white);
   padding: 0.5rem 2.5rem;
   border-radius: 10px;
   margin-bottom: 1rem;
+}
+
+.checkOutBtn {
+  background-color: var(--red);
 }
 
 .columnGap {
