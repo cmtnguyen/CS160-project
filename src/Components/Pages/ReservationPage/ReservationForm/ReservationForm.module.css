@@ -26,13 +26,13 @@
 .reservationLabel{
     color: var(--black);
     margin-top: 10px;
-    margin-left:  150px;
+    margin-left:  9.5rem;
 }
 input{
     display: flex;
     flex-direction: column;
     border: 1px solid var(--dark-grey);
-    font-size: 1.1em;
+    font-size: 1.1rem;
 }
 
 .reservationLongBox, .reservationInputBox{
@@ -41,18 +41,17 @@ input{
     border-color: var(--main-white);
     padding: 10px;
     height: 35px;
-    margin-left: 150px;
+    margin-left: 8.5rem;
 }
 
 .reservationLongBox {
-    width: 80%;
-    min-width: 50px;
-    max-width: 620px;
+    width: 75%;
 }
 
 .reservationInputBox{
-    width: 200px;
+    width: 49%;
 }
+
 .reservationBtn{
     margin-left: 430px;
     margin-top: 30px;
@@ -91,13 +90,86 @@ input{
 
 .error{
     color: var(--red);
-    margin-left: 150px;
+    margin-left: 8.5rem;
 }
 .datePicker{
     border-color: var(--main-white);
     background-color: var(--main-white);
     border-radius: 10px;
     height: 35px;
-    width: 200px;
-    margin-left: 8.5em;
+    width: 49%;
+    margin-left: 8.5rem;
+    padding: 10px;
+}
+
+@media only screen and (max-width: 1100px){
+    .reservationLongBox, .reservationInputBox {
+        width: 24rem;
+        margin-left: 7rem;
+    }
+
+    .datePicker{
+        width: 24rem;
+        margin-left: 7rem;
+    }
+
+    .reservationLabel{
+        margin-left: 7.5rem;
+    }
+
+    .reservationBtn{
+        margin-left: 20rem;
+    }
+
+    .error{
+        margin-left: 7.5rem;
+    }
+}
+
+@media only screen and (max-width: 800px){
+    .reservationLongBox, .reservationInputBox {
+        margin-left: 3rem;
+        width: 20rem;
+    }
+
+    .datePicker{
+        margin-left: 3rem;
+        width: 20rem;
+    }
+
+    .reservationLabel{
+        margin-left: 3.5rem;
+    }
+
+    .reservationBtn{
+        margin-left: 15rem;
+    }
+
+    .error{
+        margin-left: 3.5rem;
+    }
+}
+
+@media only screen and (max-width: 600px){
+    .reservationLongBox, .reservationInputBox {
+        width: 12rem;
+        margin-left: 3rem;
+    }
+
+    .datePicker{
+        width: 12rem;
+        margin-left: 3rem;
+    }
+
+    .reservationLabel{
+        margin-left: 3.5rem;
+    }
+
+    .reservationBtn{
+        margin-left: 6rem;
+    }
+
+    .error{
+        margin-left: 3.5rem;
+    }
 }
