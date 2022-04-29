@@ -6,7 +6,9 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { Link } from "react-router-dom";
 import {
   getAllReservations,
+  getPrevReservation,
   checkIntoReservation,
+  checkOutReservation,
   cancelReservation,
 } from "../../../Services/reservationServices.js";
 import styles from "./ViewPage.module.css";
@@ -115,7 +117,7 @@ const ViewPage = () => {
         const departureTime = new Date(reservation.reservationDate);
         departureTime.setTime(
           departureTime.getTime() + reservation.time * 60 * 60 * 1000
-        ); // add an hour to arrival time
+        ); // adds however many hours they reserved to get departure time
         return departureTime.getTime() > currentDate.getTime();
       });
       setReservations(filteredReservations);
@@ -123,13 +125,20 @@ const ViewPage = () => {
     fetchReservations();
   }, [user]);
 
-  const checkInHandler = (id) => {
+  const checkInHandler = async (id) => {
     const newReservations = [...reservations];
-    newReservations.find(
-      (reservation) => reservation.reservationId === id
-    ).isCheckedIn = true;
     try {
-      checkIntoReservation(id);
+      const prevReservation = await getPrevReservation(id);
+      if (prevReservation && prevReservation.isCheckedIn) {
+        console.log("spot taken");
+        // msg that someone's there, so can't check in until they leave or something
+        return;
+      } else {
+        checkIntoReservation(id);
+        newReservations.find(
+          (reservation) => reservation.reservationId === id
+        ).isCheckedIn = true;
+      }
     } catch (err) {
       console.error(err);
       alert(err.message);
@@ -142,6 +151,13 @@ const ViewPage = () => {
     newReservations.find(
       (reservation) => reservation.reservationId === id
     ).isCheckedOut = true;
+    try {
+      checkOutReservation(id);
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
+    }
+    // make reservation disappear from frontend with a success msg
     setReservations(newReservations);
   };
 
