@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { Row, Col, Container } from "react-bootstrap";
+import { Row, Col, Container, Alert } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { auth } from "../../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -12,6 +12,7 @@ import {
 import styles from "./ViewPage.module.css";
 
 const Reservation = ({ reservation, onCancel, onCheckIn, onCheckOut }) => {
+  const [show, setShow] = useState(true);
   // formatting date and time
   const weekday = [
     "Sunday",
@@ -31,6 +32,17 @@ const Reservation = ({ reservation, onCancel, onCheckIn, onCheckOut }) => {
     militaryToStandardTime(resDate.getHours() + reservation.time);
   return (
     <div>
+      {reservation.isCheckedIn && show && (
+        <Alert
+          className="mt-2"
+          variant="warning"
+          onClose={() => setShow(false)}
+          dismissible
+        >
+          Remember to check-out at least 10 minutes before the end of your
+          duration!
+        </Alert>
+      )}
       <p>Reservation Number: {reservation.reservationId}</p>
       <p>Parking Spot: {reservation.parkingSpotId}</p>
       <p>License Plate: {reservation.licensePlate}</p>

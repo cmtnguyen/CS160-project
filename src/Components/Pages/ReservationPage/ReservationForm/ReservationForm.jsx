@@ -173,16 +173,9 @@ const ReservationForm = (props) => {
       {/*Reservation Page */}
       <Container className={styles.reservationAlign} class="reservation">
         <h1 className={styles.reservationTitle}> Reserve a Spot</h1>
-        <Row>
-          <Col xs={5}>
+        <Row className="ms-3">
+          <Col>
             <label className={styles.reservationLabel}>First Name</label>
-          </Col>
-          <Col xs={5}>
-            <label className={styles.reservationLabel}>Last Name</label>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={5}>
             <input
               className={styles.reservationInputBox}
               type="text"
@@ -191,8 +184,10 @@ const ReservationForm = (props) => {
               value={formValues.firstName}
               onChange={handleChange}
             ></input>
+            <label className={styles.error}>{formErrors.firstName}</label>
           </Col>
-          <Col xs={5}>
+          <Col>
+            <label className={styles.reservationLabel}>Last Name</label>
             <input
               className={styles.reservationInputBox}
               type="text"
@@ -201,23 +196,12 @@ const ReservationForm = (props) => {
               value={formValues.lastName}
               onChange={handleChange}
             ></input>
-          </Col>
-          <Row>
-            <Col xs={5}>
-              <label className={styles.error}>{formErrors.firstName}</label>
-            </Col>
-            <Col xs={5}>
-              <label className={styles.error}>{formErrors.lastName}</label>
-            </Col>
-          </Row>
-        </Row>
-        <Row>
-          <Col xs={5}>
-            <label className={styles.reservationLabel}>Email</label>
+            <label className={styles.error}>{formErrors.lastName}</label>
           </Col>
         </Row>
-        <Row>
+        <Row className="ms-3">
           <Col>
+            <label className={styles.reservationLabel}>Email</label>
             <input
               className={styles.reservationLongBox}
               type="text"
@@ -226,23 +210,12 @@ const ReservationForm = (props) => {
               value={formValues.email}
               onChange={handleChange}
             ></input>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={5}>
             <label className={styles.error}>{formErrors.email}</label>
           </Col>
         </Row>
-        <Row>
-          <Col xs={5}>
+        <Row className="ms-3">
+          <Col>
             <label className={styles.reservationLabel}>Arrival Time</label>
-          </Col>
-          <Col xs={5}>
-            <label className={styles.reservationLabel}>Departure Time</label>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={5}>
             <DatePicker
               className={styles.datePicker}
               selected={startDate}
@@ -258,8 +231,12 @@ const ReservationForm = (props) => {
               timeIntervals={60}
               dateFormat="MMMM d, yyyy h:mm aa"
             />
+            <label className={styles.reservationLabel}>
+              {/*Spacing Purposes */}
+            </label>
           </Col>
-          <Col xs={5}>
+          <Col>
+            <label className={styles.reservationLabel}>Departure Time</label>
             <DatePicker
               className={styles.datePicker}
               selected={endDate}
@@ -280,30 +257,16 @@ const ReservationForm = (props) => {
               locale="en-US"
               dateFormat="MMMM d, yyyy h:mm aa"
             />
+            <label className={styles.reservationLabel}>
+              {/*Spacing Purposes */}
+            </label>
           </Col>
         </Row>
-        <Row>
-          <Col xs={5}>
-            {/*<label className={styles.error}>{formErrors.arrive}</label>*/}
-          </Col>
-          <Col xs={5}>
-            {/*<label className={styles.error}>{formErrors.depart}</label>*/}
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={5}>
+        <Row className="ms-3">
+          <Col>
             <label className={styles.reservationLabel}>
               License Plate Number
             </label>
-          </Col>
-          <Col xs={5}>
-            <label className={styles.reservationLabel}>
-              Chosen Parking Spot
-            </label>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={5}>
             <input
               className={styles.reservationInputBox}
               type="text"
@@ -312,47 +275,48 @@ const ReservationForm = (props) => {
               value={formValues.license}
               onChange={handleChange}
             ></input>
+            <label className={styles.error}>{formErrors.license}</label>
           </Col>
-          <Col xs={5}>
+          <Col>
+            <label className={styles.reservationLabel}>
+              Chosen Parking Spot
+            </label>
             <input
               className={styles.reservationInputBox}
               ref={componentRef}
               type="text"
               disabled
             ></input>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={5}>
-            <label className={styles.error}>{formErrors.license}</label>
-          </Col>
-          <Col xs={5}>
             <label className={styles.error}>{formErrors.parkingSpot}</label>
           </Col>
         </Row>
 
         {/* Garage Floor Image*/}
-        <Container className={styles.garageFloor}>
-          <Row>
-            {parkValuesRow1.map((parkValue) => (
-              <ParkingSpot
-                parkValue={parkValue}
-                isReserved={reservedDates.includes(parkValue)}
-                onClickHandler={onClickHandler}
-              />
-            ))}
-          </Row>
-          <Row>
-            {parkValuesRow2.map((parkValue) => (
-              <ParkingSpot
-                parkValue={parkValue}
-                isReserved={reservedDates.includes(parkValue)}
-                onClickHandler={onClickHandler}
-              />
-            ))}
-          </Row>
-        </Container>
-        <button className={styles.reservationBtn}>Reserve</button>
+        <div className="d-flex justify-content-center">
+          <Container className={styles.garageFloor}>
+            <Row>
+              {parkValuesRow1.map((parkValue) => (
+                <ParkingSpot
+                  parkValue={parkValue}
+                  isReserved={reservedDates.includes(parkValue)}
+                  onClickHandler={onClickHandler}
+                />
+              ))}
+            </Row>
+            <Row>
+              {parkValuesRow2.map((parkValue) => (
+                <ParkingSpot
+                  parkValue={parkValue}
+                  isReserved={reservedDates.includes(parkValue)}
+                  onClickHandler={onClickHandler}
+                />
+              ))}
+            </Row>
+          </Container>
+        </div>
+        <div className="d-flex justify-content-center">
+          <button className={styles.reservationBtn}>Reserve</button>
+        </div>
       </Container>
       <Fragment></Fragment>
     </form>
