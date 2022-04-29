@@ -46,16 +46,24 @@ export const getAllReservations = async () => {
 
 export const getReservationByDate = async (date) => {
   const header = await createToken();
-
   try{
     const res = await axios.get(resByDateUrl + date, header);
     return res.data;
   }
-
   catch(e) {
     console.error(e);
   }
+}
 
+export const getReservationByRangeDate = async (startDate, endDate) => {
+  const header = await createToken();
+  try{
+    const res = await axios.get(resByDateUrl + startDate + "/" + endDate, header);
+    return res.data;
+  }
+  catch(e) {
+    console.error(e);
+  }
 }
 
 export const checkIntoReservation = async (reservationId) => {
