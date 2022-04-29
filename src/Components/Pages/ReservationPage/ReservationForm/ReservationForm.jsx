@@ -10,7 +10,7 @@ import { auth } from "../../../../firebase.js";
 import { v4 as uuid } from "uuid";
 import {
   addToReservationDB,
-  getReservationByDate,
+  getReservationByRangeDate,
 } from "../../../../Services/reservationServices.js";
 
 //should prob move to new file later
@@ -72,8 +72,9 @@ const ReservationForm = (props) => {
   };
 
   const fetchReservedReservations = async () => {
-    const reservedReservations = await getReservationByDate(
-      startDate.toISOString().substring(0, 13) + ":00:00.000+00:00"
+    const reservedReservations = await getReservationByRangeDate(
+      startDate.toISOString().substring(0, 13) + ":00:00.000+00:00",
+      endDate.toISOString().substring(0, 13) + ":00:00.000+00:00"
     );
     const reservedSpotIds = reservedReservations.map(
       (reservation) => reservation.parkingSpotId
@@ -123,7 +124,7 @@ const ReservationForm = (props) => {
   useEffect(() => {
     fetchReservedReservations();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [startDate, isSubmit]);
+  }, [startDate, endDate, isSubmit]);
 
   useEffect(() => {
     if (Object.keys(formErrors).length === 0 && isSubmit) {
