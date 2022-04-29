@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { Link } from "react-router-dom";
 import styles from "./LandingPage.module.css";
 import { Row, Col, Button, Container } from "react-bootstrap";
 import Lot from "../../Assets/Lot.svg";
@@ -36,29 +37,27 @@ const LandingPage = () => {
                 Reserve a parking spot today with Car-eservation.
               </p>
               <p className={styles.landingSub}>Easy as 1, 2, 3!</p>
-              <Button href="/reserve" className={styles.reserve}>
-                Click Here to Get Started
-              </Button>
+              <Link to="/reserve">
+                <Button className={styles.reserve}>
+                  Click Here to Get Started
+                </Button>
+              </Link>
             </Col>
           </Row>
         </section>
 
         <footer className={styles.footer}>
           <p>Already Reserved a Spot?</p>
-          <Button
-            href="/reservations"
-            variant="danger"
-            className={styles.cancel}
-          >
-            Cancel Reservation
-          </Button>
-          <Button
-            href="/reservations"
-            variant="success"
-            className={styles.checkIn}
-          >
-            Check-In
-          </Button>
+          <Link to="/reservations">
+            <Button variant="danger" className={styles.cancel}>
+              Cancel Reservation
+            </Button>
+          </Link>
+          <Link to="/reservations">
+            <Button variant="success" className={styles.checkIn}>
+              Check-In
+            </Button>
+          </Link>
         </footer>
       </Container>
     </Fragment>
