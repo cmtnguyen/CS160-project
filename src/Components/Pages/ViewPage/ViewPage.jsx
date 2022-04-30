@@ -6,7 +6,9 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { Link } from "react-router-dom";
 import {
   getAllReservations,
+  getPrevReservation,
   checkIntoReservation,
+  checkOutReservation,
   cancelReservation,
 } from "../../../Services/reservationServices.js";
 import styles from "./ViewPage.module.css";
@@ -32,7 +34,7 @@ const Reservation = ({ reservation, onCancel, onCheckIn, onCheckOut }) => {
     militaryToStandardTime(resDate.getHours() + reservation.time);
   return (
     <div>
-      {reservation.isCheckedIn && show && (
+      {reservation.isCheckedIn && !reservation.isCheckedOut && show && (
         <Alert
           className="mt-2"
           variant="warning"
@@ -43,44 +45,51 @@ const Reservation = ({ reservation, onCancel, onCheckIn, onCheckOut }) => {
           duration!
         </Alert>
       )}
-      <p>Reservation Number: {reservation.reservationId}</p>
-      <p>Parking Spot: {reservation.parkingSpotId}</p>
-      <p>License Plate: {reservation.licensePlate}</p>
-      <p>Reservation Date: {justDate}</p>
-      <p>Reservation Time: {justTime}</p>
-      {reservation.isCheckedOut && (
-        <p className="text-center">SUCCESSFULLY CHECKED OUT</p>
+      {reservation.invalidCheckIn && !reservation.isCheckedIn && (
+        <Alert className="mt-2" variant="danger">
+          Sorry! The person before you has not checked out yet. Please try again
+          later.
+        </Alert>
       )}
-      {reservation.isCheckedIn && !reservation.isCheckedOut && (
-        <div className="d-flex justify-content-center">
-          <button
-            className={styles.checkOutBtn}
-            onClick={() => onCheckOut(reservation.reservationId)}
-          >
-            Check-Out
-          </button>
-        </div>
-      )}
-      {!reservation.isCheckedIn && (
-        <Row className={styles.contains}>
-          <Col>
-            <button
-              value={reservation.id}
-              className={styles.checkBtn}
-              onClick={() => onCheckIn(reservation.reservationId)}
-            >
-              Check-In
-            </button>
-          </Col>
-          <Col>
-            <button
-              className={styles.checkBtn}
-              onClick={() => onCancel(reservation.reservationId)}
-            >
-              Cancel
-            </button>
-          </Col>
-        </Row>
+      {!reservation.isCheckedOut && (
+        <Fragment>
+          <p>Reservation Number: {reservation.reservationId}</p>
+          <p>Parking Spot: {reservation.parkingSpotId}</p>
+          <p>License Plate: {reservation.licensePlate}</p>
+          <p>Reservation Date: {justDate}</p>
+          <p>Reservation Time: {justTime}</p>
+          {reservation.isCheckedIn && !reservation.isCheckedOut && (
+            <div className="d-flex justify-content-center">
+              <button
+                className={styles.checkOutBtn}
+                onClick={() => onCheckOut(reservation.reservationId)}
+              >
+                Check-Out
+              </button>
+            </div>
+          )}
+          {!reservation.isCheckedIn && (
+            <Row className={styles.contains}>
+              <Col>
+                <button
+                  value={reservation.id}
+                  className={styles.checkBtn}
+                  onClick={() => onCheckIn(reservation.reservationId)}
+                >
+                  Check-In
+                </button>
+              </Col>
+              <Col>
+                <button
+                  className={styles.checkBtn}
+                  onClick={() => onCancel(reservation.reservationId)}
+                >
+                  Cancel
+                </button>
+              </Col>
+            </Row>
+          )}
+        </Fragment>
       )}
     </div>
   );
@@ -100,6 +109,7 @@ const militaryToStandardTime = (time) => {
     return time - 12 + ":00 PM";
   }
 };
+
 const ViewPage = () => {
   const [user] = useAuthState(auth);
   const [reservations, setReservations] = useState();
@@ -115,7 +125,7 @@ const ViewPage = () => {
         const departureTime = new Date(reservation.reservationDate);
         departureTime.setTime(
           departureTime.getTime() + reservation.time * 60 * 60 * 1000
-        ); // add an hour to arrival time
+        ); // adds however many hours they reserved to get departure time
         return departureTime.getTime() > currentDate.getTime();
       });
       setReservations(filteredReservations);
@@ -123,13 +133,23 @@ const ViewPage = () => {
     fetchReservations();
   }, [user]);
 
-  const checkInHandler = (id) => {
+  const checkInHandler = async (id) => {
     const newReservations = [...reservations];
-    newReservations.find(
-      (reservation) => reservation.reservationId === id
-    ).isCheckedIn = true;
+
     try {
-      checkIntoReservation(id);
+      const prevReservation = await getPrevReservation(id);
+      if (prevReservation && prevReservation.isCheckedIn) {
+        console.log("spot taken");
+        // msg that someone's there, so can't check in until they leave or something
+        newReservations.find(
+          (reservation) => reservation.reservationId === id
+        ).invalidCheckIn = true;
+      } else {
+        checkIntoReservation(id);
+        newReservations.find(
+          (reservation) => reservation.reservationId === id
+        ).isCheckedIn = true;
+      }
     } catch (err) {
       console.error(err);
       alert(err.message);
@@ -137,11 +157,21 @@ const ViewPage = () => {
     setReservations(newReservations);
   };
 
+  const [showCheckedOut, setShowCheckedOut] = useState(false);
   const checkOutHandler = (id) => {
     const newReservations = [...reservations];
     newReservations.find(
       (reservation) => reservation.reservationId === id
     ).isCheckedOut = true;
+    try {
+      checkOutReservation(id);
+      cancelReservation(id);
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
+    }
+    // make reservation disappear from frontend with a success msg
+    setShowCheckedOut(true);
     setReservations(newReservations);
   };
 
@@ -166,6 +196,16 @@ const ViewPage = () => {
           <button className={styles.reserveBtn}>Make a Reservation</button>
         </Link>
       </div>
+      {showCheckedOut && (
+        <Alert
+          className="mt-2 ms-5 me-5"
+          variant="success"
+          onClose={() => setShowCheckedOut(false)}
+          dismissible
+        >
+          You have successfully checked-out!
+        </Alert>
+      )}
       {reservations && (
         <Container className={styles.checkAlign}>
           <div>
