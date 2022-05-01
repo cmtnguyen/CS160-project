@@ -7,6 +7,8 @@ const resByResIdUrl = resUrl + "reservationId/";
 const resByUserIdUrl = resUrl + "userId/";
 const resByDateUrl = resUrl + "date/";
 const resByParkingSpotUrl = resUrl + "parkingSpotId/";
+const resByCheckedInUrl = resUrl + "checkedIn"
+
 
 export const addToReservationDB = async (
   reservationId,
@@ -34,6 +36,7 @@ export const addToReservationDB = async (
     console.error(e);
   }
 };
+
 export const getAllReservations = async () => {
   const user = auth.currentUser;
   const header = await createToken();
@@ -143,3 +146,13 @@ export const checkOutReservation = async (reservationId) => {
     console.error(e);
   }
 };
+
+export const getCheckedInReservations = async() => {
+  const header = await createToken();
+  try {
+    const res = await axios.get(resByCheckedInUrl, header);
+    return res.data;
+  } catch (e) {
+    console.error(e);
+  }
+}

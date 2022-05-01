@@ -53,7 +53,7 @@ const Reservation = ({ reservation, onCancel, onCheckIn, onCheckOut }) => {
       )}
       {!reservation.isCheckedOut && (
         <Fragment>
-          <p>Reservation Number: {reservation.reservationId}</p>
+          <p>Reservation ID: {reservation.reservationId}</p>
           <p>Parking Spot: {reservation.parkingSpotId}</p>
           <p>License Plate: {reservation.licensePlate}</p>
           <p>Reservation Date: {justDate}</p>
@@ -139,8 +139,6 @@ const ViewPage = () => {
     try {
       const prevReservation = await getPrevReservation(id);
       if (prevReservation && prevReservation.isCheckedIn) {
-        console.log("spot taken");
-        // msg that someone's there, so can't check in until they leave or something
         newReservations.find(
           (reservation) => reservation.reservationId === id
         ).invalidCheckIn = true;
@@ -170,7 +168,6 @@ const ViewPage = () => {
       console.error(err);
       alert(err.message);
     }
-    // make reservation disappear from frontend with a success msg
     setShowCheckedOut(true);
     setReservations(newReservations);
   };

@@ -7,13 +7,12 @@ import "react-datepicker/dist/react-datepicker.css";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
 import { auth } from "../../../../firebase.js";
-import { v4 as uuid } from "uuid";
 import {
   addToReservationDB,
   getReservationByRangeDate,
 } from "../../../../Services/reservationServices.js";
 
-//should prob move to new file later
+const { nanoid } = require("nanoid");
 const ParkingSpot = ({ parkValue, isReserved, onClickHandler }) => {
   return (
     <Col>
@@ -90,7 +89,7 @@ const ReservationForm = (props) => {
     setFormErrors(errors);
     console.log("2: ", formValues);
     if (Object.keys(errors).length === 0) {
-      const reservationId = uuid();
+      const reservationId = nanoid(6);
       const parkingSpotId = parkingSpot;
       const userId = user.uid;
       const licensePlate = formValues.license;
