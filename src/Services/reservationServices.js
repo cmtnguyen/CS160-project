@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createToken, auth } from "../firebase.js";
+import { createToken, auth, getUser } from "../firebase.js";
 
 const baseUrl = process.env.REACT_APP_FIREBASE_POST_URL;
 const resUrl = baseUrl + "reservations/";
@@ -7,6 +7,7 @@ const resByResIdUrl = resUrl + "reservationId/";
 const resByUserIdUrl = resUrl + "userId/";
 const resByDateUrl = resUrl + "date/";
 const resByParkingSpotUrl = resUrl + "parkingSpotId/";
+const resByCheckedInUrl = resUrl + "checkedIn";
 
 export const addToReservationDB = async (
   reservationId,
@@ -34,6 +35,7 @@ export const addToReservationDB = async (
     console.error(e);
   }
 };
+
 export const getAllReservations = async () => {
   const user = auth.currentUser;
   const header = await createToken();
@@ -141,5 +143,25 @@ export const checkOutReservation = async (reservationId) => {
     return res.data;
   } catch (e) {
     console.error(e);
+  }
+};
+
+export const getCheckedInReservations = async () => {
+  const header = await createToken();
+  try {
+    const res = await axios.get(resByCheckedInUrl, header);
+    return res.data;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const getName = async (userId) => {
+  try {
+    const resUser = await getUser(userId);
+    return resUser.name;
+  } catch (err) {
+    console.error(err);
+    alert(err.message);
   }
 };

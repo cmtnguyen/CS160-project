@@ -21,10 +21,6 @@ const Navibar = () => {
               View Reservations
             </Link>
             <span className={styles.dots}>&bull;</span>
-            <Link to="/report" className={styles.navBtn}>
-              Report
-            </Link>
-            <span className={styles.dots}>&bull;</span>
             <Link to="/reserve" className={styles.navBtn}>
               Reserve a Spot
             </Link>

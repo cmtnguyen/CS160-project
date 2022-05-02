@@ -11,27 +11,16 @@ import {
   checkOutReservation,
   cancelReservation,
 } from "../../../Services/reservationServices.js";
+import {
+  getJustDate,
+  getTimeRange,
+} from "../../../Services/dateTimeServices.js";
 import styles from "./ViewPage.module.css";
 
 const Reservation = ({ reservation, onCancel, onCheckIn, onCheckOut }) => {
   const [show, setShow] = useState(true);
-  // formatting date and time
-  const weekday = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-  const resDate = new Date(reservation.reservationDate);
-  const justDate =
-    weekday[resDate.getDay()] + " " + resDate.toLocaleDateString();
-  const justTime =
-    militaryToStandardTime(resDate.getHours()) +
-    " - " +
-    militaryToStandardTime(resDate.getHours() + reservation.time);
+  const justDate = getJustDate(reservation);
+  const timeRange = getTimeRange(reservation);
   return (
     <div>
       {reservation.isCheckedIn && !reservation.isCheckedOut && show && (
@@ -53,11 +42,11 @@ const Reservation = ({ reservation, onCancel, onCheckIn, onCheckOut }) => {
       )}
       {!reservation.isCheckedOut && (
         <Fragment>
-          <p>Reservation Number: {reservation.reservationId}</p>
+          <p>Reservation ID: {reservation.reservationId}</p>
           <p>Parking Spot: {reservation.parkingSpotId}</p>
           <p>License Plate: {reservation.licensePlate}</p>
           <p>Reservation Date: {justDate}</p>
-          <p>Reservation Time: {justTime}</p>
+          <p>Reservation Time: {timeRange}</p>
           {reservation.isCheckedIn && !reservation.isCheckedOut && (
             <div className="d-flex justify-content-center">
               <button
@@ -95,21 +84,6 @@ const Reservation = ({ reservation, onCancel, onCheckIn, onCheckOut }) => {
   );
 };
 
-const militaryToStandardTime = (time) => {
-  if (time >= 24) {
-    time -= 24;
-  }
-  if (time === 0) {
-    return "12:00 AM";
-  } else if (time > 0 && time < 12) {
-    return time + ":00 AM";
-  } else if (time === 12) {
-    return time + ":00 PM";
-  } else {
-    return time - 12 + ":00 PM";
-  }
-};
-
 const ViewPage = () => {
   const [user] = useAuthState(auth);
   const [reservations, setReservations] = useState();
@@ -139,8 +113,6 @@ const ViewPage = () => {
     try {
       const prevReservation = await getPrevReservation(id);
       if (prevReservation && prevReservation.isCheckedIn) {
-        console.log("spot taken");
-        // msg that someone's there, so can't check in until they leave or something
         newReservations.find(
           (reservation) => reservation.reservationId === id
         ).invalidCheckIn = true;
@@ -170,7 +142,6 @@ const ViewPage = () => {
       console.error(err);
       alert(err.message);
     }
-    // make reservation disappear from frontend with a success msg
     setShowCheckedOut(true);
     setReservations(newReservations);
   };

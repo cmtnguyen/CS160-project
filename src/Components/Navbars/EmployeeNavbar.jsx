@@ -17,20 +17,12 @@ const EmployeeNavbar = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            <Link to="/employee/checkin" className={styles.navBtn}>
+            <Link to="/employee/viewcheckin" className={styles.navBtn}>
               View Check-Ins
-            </Link>
-            <span className={styles.dots}>&bull;</span>
-            <Link to="/employee/viewreport" className={styles.navBtn}>
-              View Reports
             </Link>
             <span className={styles.dots}>&bull;</span>
             <Link to="/reservations" className={styles.navBtn}>
               View Reservations
-            </Link>
-            <span className={styles.dots}>&bull;</span>
-            <Link to="/report" className={styles.navBtn}>
-              Report
             </Link>
             <span className={styles.dots}>&bull;</span>
             <Link to="/reserve" className={styles.navBtn}>

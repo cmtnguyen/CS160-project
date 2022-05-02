@@ -51,7 +51,7 @@ export const createToken = async () => {
   return payloadHeader;
 };
 
-const userUrl = process.env.REACT_APP_FIREBASE_POST_URL + "users";
+const userUrl = process.env.REACT_APP_FIREBASE_POST_URL + "users/";
 const addToUserDB = async (uid, name, email, isEmployee) => {
   const header = await createToken();
   const payload = {
@@ -62,6 +62,16 @@ const addToUserDB = async (uid, name, email, isEmployee) => {
   };
   try {
     const res = await axios.post(userUrl, payload, header);
+    return res.data;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const getUser = async (userId) => {
+  const header = await createToken();
+  try {
+    const res = await axios.get(userUrl + userId, header);
     return res.data;
   } catch (e) {
     console.error(e);

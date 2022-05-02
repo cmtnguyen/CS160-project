@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import styles from "./ReservationForm.module.css";
 import { Row, Col, Container } from "react-bootstrap";
 import { useState, useEffect, useRef } from "react";
@@ -7,13 +6,12 @@ import "react-datepicker/dist/react-datepicker.css";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
 import { auth } from "../../../../firebase.js";
-import { v4 as uuid } from "uuid";
 import {
   addToReservationDB,
   getReservationByRangeDate,
 } from "../../../../Services/reservationServices.js";
 
-//should prob move to new file later
+const { nanoid } = require("nanoid");
 const ParkingSpot = ({ parkValue, isReserved, onClickHandler }) => {
   return (
     <Col>
@@ -55,9 +53,6 @@ const ReservationForm = (props) => {
   };
 
   const initValues = {
-    firstName: "",
-    lastName: "",
-    email: "",
     license: "",
   };
 
@@ -90,7 +85,7 @@ const ReservationForm = (props) => {
     setFormErrors(errors);
     console.log("2: ", formValues);
     if (Object.keys(errors).length === 0) {
-      const reservationId = uuid();
+      const reservationId = nanoid(6);
       const parkingSpotId = parkingSpot;
       const userId = user.uid;
       const licensePlate = formValues.license;
@@ -134,18 +129,6 @@ const ReservationForm = (props) => {
 
   const validate = (values) => {
     const errors = {};
-    const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-    if (!values.firstName) {
-      errors.firstName = "First Name Required!";
-    }
-    if (!values.lastName) {
-      errors.lastName = "Last Name Required!";
-    }
-    if (!values.email) {
-      errors.email = "Email required";
-    } else if (!emailFormat.test(values.email)) {
-      errors.email = "Invalid Email Address";
-    }
     if (!values.license) {
       errors.license = "License Plate Required!";
     }
@@ -157,9 +140,6 @@ const ReservationForm = (props) => {
   };
 
   const clearValues = (values) => {
-    formValues.firstName = "";
-    formValues.lastName = "";
-    formValues.email = "";
     formValues.license = "";
     setStartDate(
       setHours(setMinutes(new Date(), 0), new Date().getHours() + 1)
@@ -172,48 +152,8 @@ const ReservationForm = (props) => {
   return (
     <form onSubmit={handleSubmit}>
       {/*Reservation Page */}
-      <Container className={styles.reservationAlign} class="reservation">
+      <Container className={`${styles.reservationAlign} reservation`}>
         <h1 className={styles.reservationTitle}> Reserve a Spot</h1>
-        <Row className="ms-3">
-          <Col>
-            <label className={styles.reservationLabel}>First Name</label>
-            <input
-              className={styles.reservationInputBox}
-              type="text"
-              name="firstName"
-              placeholder="Enter First Name"
-              value={formValues.firstName}
-              onChange={handleChange}
-            ></input>
-            <label className={styles.error}>{formErrors.firstName}</label>
-          </Col>
-          <Col>
-            <label className={styles.reservationLabel}>Last Name</label>
-            <input
-              className={styles.reservationInputBox}
-              type="text"
-              name="lastName"
-              placeholder="Enter Last Name"
-              value={formValues.lastName}
-              onChange={handleChange}
-            ></input>
-            <label className={styles.error}>{formErrors.lastName}</label>
-          </Col>
-        </Row>
-        <Row className="ms-3">
-          <Col>
-            <label className={styles.reservationLabel}>Email</label>
-            <input
-              className={styles.reservationLongBox}
-              type="text"
-              name="email"
-              placeholder="ex. example@example.com"
-              value={formValues.email}
-              onChange={handleChange}
-            ></input>
-            <label className={styles.error}>{formErrors.email}</label>
-          </Col>
-        </Row>
         <Row className="ms-3">
           <Col>
             <label className={styles.reservationLabel}>Arrival Time</label>
@@ -228,7 +168,6 @@ const ReservationForm = (props) => {
               showTimeSelect
               filterTime={filterPassedTime}
               minDate={new Date()}
-              locale="en-US"
               timeIntervals={60}
               dateFormat="MMMM d, yyyy h:mm aa"
             />
@@ -243,19 +182,32 @@ const ReservationForm = (props) => {
               selected={endDate}
               onChangeRaw={(e) => e.preventDefault()}
               onChange={(date) => setEndDate(date)}
-              minDate={startDate}
-              maxDate={startDate}
+              minDate={
+                startDate.getHours() === 23
+                  ? startDate.getTime() + 24 * 60 * 60 * 1000
+                  : startDate
+              }
+              maxDate={
+                startDate.getHours() === 23
+                  ? startDate.getTime() + 24 * 60 * 60 * 1000
+                  : startDate
+              }
               minTime={setHours(
                 setMinutes(startDate, 0),
                 startDate.getHours() + 1
               )}
-              maxTime={setHours(
-                setMinutes(startDate, 0),
-                startDate.getHours() + 3
-              )}
+              maxTime={
+                startDate.getHours() <= 20
+                  ? setHours(setMinutes(startDate, 0), startDate.getHours() + 3)
+                  : startDate.getHours() === 23
+                  ? setHours(
+                      setMinutes(startDate.getTime() + 24 * 60 * 60 * 1000, 0),
+                      startDate.getHours() + 3 - 24
+                    )
+                  : setHours(setMinutes(startDate, 0), 23)
+              }
               timeIntervals={60}
               showTimeSelect
-              locale="en-US"
               dateFormat="MMMM d, yyyy h:mm aa"
             />
             <label className={styles.reservationLabel}>
@@ -298,6 +250,7 @@ const ReservationForm = (props) => {
             <Row>
               {parkValuesRow1.map((parkValue) => (
                 <ParkingSpot
+                  key={parkValue}
                   parkValue={parkValue}
                   isReserved={reservedDates.includes(parkValue)}
                   onClickHandler={onClickHandler}
@@ -307,6 +260,7 @@ const ReservationForm = (props) => {
             <Row>
               {parkValuesRow2.map((parkValue) => (
                 <ParkingSpot
+                  key={parkValue}
                   parkValue={parkValue}
                   isReserved={reservedDates.includes(parkValue)}
                   onClickHandler={onClickHandler}
@@ -319,7 +273,6 @@ const ReservationForm = (props) => {
           <button className={styles.reservationBtn}>Reserve</button>
         </div>
       </Container>
-      <Fragment></Fragment>
     </form>
   );
 };
