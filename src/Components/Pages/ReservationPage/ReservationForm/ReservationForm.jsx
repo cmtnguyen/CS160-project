@@ -182,16 +182,30 @@ const ReservationForm = (props) => {
               selected={endDate}
               onChangeRaw={(e) => e.preventDefault()}
               onChange={(date) => setEndDate(date)}
-              minDate={startDate}
-              maxDate={startDate}
+              minDate={
+                startDate.getHours() === 23
+                  ? startDate.getTime() + 24 * 60 * 60 * 1000
+                  : startDate
+              }
+              maxDate={
+                startDate.getHours() === 23
+                  ? startDate.getTime() + 24 * 60 * 60 * 1000
+                  : startDate
+              }
               minTime={setHours(
                 setMinutes(startDate, 0),
                 startDate.getHours() + 1
               )}
-              maxTime={setHours(
-                setMinutes(startDate, 0),
-                startDate.getHours() + 3
-              )}
+              maxTime={
+                startDate.getHours() <= 20
+                  ? setHours(setMinutes(startDate, 0), startDate.getHours() + 3)
+                  : startDate.getHours() === 23
+                  ? setHours(
+                      setMinutes(startDate.getTime() + 24 * 60 * 60 * 1000, 0),
+                      startDate.getHours() + 3 - 24
+                    )
+                  : setHours(setMinutes(startDate, 0), 23)
+              }
               timeIntervals={60}
               showTimeSelect
               dateFormat="MMMM d, yyyy h:mm aa"
