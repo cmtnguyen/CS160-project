@@ -58,11 +58,7 @@ export const getReservationByDate = async (date) => {
 export const getReservationByRangeDate = async (startDate, endDate) => {
   const header = await createToken();
   try {
-    const res = await axios.get(
-      resByDateUrl + startDate + "/" + endDate,
-      header
-    );
-    return res.data;
+    return axios.get(resByDateUrl + startDate + endDate, header).then(res => res.data)
   } catch (e) {
     console.error(e);
   }
