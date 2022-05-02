@@ -46,7 +46,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/reserve" element={user ? <Reserve /> : reroute} />
         <Route path="/reservations" element={user ? <View /> : reroute} />
-        <Route path="/employee/viewcheckin" element={isEmployeeWorker ? <ViewCheckIn /> : reroute} />
+        <Route path="/employee/viewcheckin" element={isEmployeeWorker ? <ViewCheckIn /> : employeeReroute} />
         <Route path="*" element={<Navigate replace to="/" />} />
       </Routes>
     </Router>
