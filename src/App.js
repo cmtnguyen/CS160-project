@@ -20,21 +20,23 @@ function App() {
   const reroute = <Navigate replace to="/login" />;
   const [isEmployeeWorker, setIsEmployeeWorker] = useState(false);
 
+  let employeeReroute = <Navigate replace to="/login" />;
+
   useEffect(() => {
     const fetchEmployeeStatus = async () => {
       if (user) {
         const customer = await getUser(user.uid);
         const employeeOrUser = customer.isEmployee;
         setIsEmployeeWorker(employeeOrUser);
+
+        if (user && !isEmployeeWorker) {
+          employeeReroute = <Navigate replace to="/reservations" />;
+        }
       }
     };
     fetchEmployeeStatus();
-  }, [user]);
+  }, [user, isEmployeeWorker]);
 
-  let employeeReroute = <Navigate replace to="/login" />;
-  if (user) {
-    employeeReroute = <Navigate replace to="/reservations" />;
-  }
 
   return (
     // Routes for website

@@ -1,7 +1,7 @@
 import { Row, Col, Container } from "react-bootstrap";
 import styles from "./ViewCheckInPage.module.css";
 import { useEffect, useState } from "react";
-import { auth } from "../../firebase";
+import { auth, getUser } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
   getCheckedInReservations,
@@ -13,6 +13,7 @@ import { getJustDate, getTimeRange } from "../../Services/dateTimeServices.js";
 const ViewCheckInPage = () => {
   const [user] = useAuthState(auth);
   const [reservations, setReservations] = useState();
+  const [isEmployeeWorker, setIsEmployeeWorker] = useState(false);
 
   const processReservations = async (unprocessedReservations) => {
     const newReservations = [...unprocessedReservations];
@@ -31,33 +32,39 @@ const ViewCheckInPage = () => {
 
   useEffect(() => {
     const fetchReservations = async () => {
+      if (user) {
+        const customer = await getUser(user.uid);
+        const employeeOrUser = customer.isEmployee;
+        setIsEmployeeWorker(employeeOrUser);
+      }
+
       const checkedInReservations = await getCheckedInReservations();
       setReservations(checkedInReservations);
       processReservations(checkedInReservations);
     };
     fetchReservations();
-  }, [user]);
+  }, [user, isEmployeeWorker]);
 
   return (
     <Container>
       <Row>
         <Col className={styles.rowBorder}>
-          <h2>Reservation ID</h2>
+          <h2 className={styles.title}>Reservation ID</h2>
         </Col>
         <Col className={styles.rowBorder}>
-          <h2>Parking Spot</h2>
+          <h2 className={styles.title}>Parking Spot</h2>
         </Col>
         <Col className={styles.rowBorder}>
-          <h2>Name</h2>
+          <h2 className={styles.title}>Name</h2>
         </Col>
         <Col className={styles.rowBorder}>
           <h2>License Plate</h2>
         </Col>
         <Col className={styles.rowBorder}>
-          <h2>Reservation Date</h2>
+          <h2 className={styles.title}>Reservation Date</h2>
         </Col>
         <Col className={styles.rowBorder}>
-          <h2>Reservation Time</h2>
+          <h2 className={styles.title}>Reservation Time</h2>
         </Col>
       </Row>
       {reservations &&
