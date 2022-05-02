@@ -11,27 +11,16 @@ import {
   checkOutReservation,
   cancelReservation,
 } from "../../../Services/reservationServices.js";
+import {
+  getJustDate,
+  getTimeRange,
+} from "../../../Services/dateTimeServices.js";
 import styles from "./ViewPage.module.css";
 
 const Reservation = ({ reservation, onCancel, onCheckIn, onCheckOut }) => {
   const [show, setShow] = useState(true);
-  // formatting date and time
-  const weekday = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-  const resDate = new Date(reservation.reservationDate);
-  const justDate =
-    weekday[resDate.getDay()] + " " + resDate.toLocaleDateString();
-  const justTime =
-    militaryToStandardTime(resDate.getHours()) +
-    " - " +
-    militaryToStandardTime(resDate.getHours() + reservation.time);
+  const justDate = getJustDate(reservation);
+  const timeRange = getTimeRange(reservation);
   return (
     <div>
       {reservation.isCheckedIn && !reservation.isCheckedOut && show && (
@@ -57,7 +46,7 @@ const Reservation = ({ reservation, onCancel, onCheckIn, onCheckOut }) => {
           <p>Parking Spot: {reservation.parkingSpotId}</p>
           <p>License Plate: {reservation.licensePlate}</p>
           <p>Reservation Date: {justDate}</p>
-          <p>Reservation Time: {justTime}</p>
+          <p>Reservation Time: {timeRange}</p>
           {reservation.isCheckedIn && !reservation.isCheckedOut && (
             <div className="d-flex justify-content-center">
               <button
@@ -93,21 +82,6 @@ const Reservation = ({ reservation, onCancel, onCheckIn, onCheckOut }) => {
       )}
     </div>
   );
-};
-
-const militaryToStandardTime = (time) => {
-  if (time >= 24) {
-    time -= 24;
-  }
-  if (time === 0) {
-    return "12:00 AM";
-  } else if (time > 0 && time < 12) {
-    return time + ":00 AM";
-  } else if (time === 12) {
-    return time + ":00 PM";
-  } else {
-    return time - 12 + ":00 PM";
-  }
 };
 
 const ViewPage = () => {
