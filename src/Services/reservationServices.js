@@ -8,6 +8,18 @@ const resByUserIdUrl = resUrl + "userId/";
 const resByDateUrl = resUrl + "date/";
 const resByParkingSpotUrl = resUrl + "parkingSpotId/";
 
+//prints execution times for requests
+axios.interceptors.request.use( x => {
+  x.meta = x.meta || {}
+  x.meta.requestStartedAt = new Date().getTime();
+  return x;
+})
+
+axios.interceptors.response.use(x => {
+  console.log(`Execution time for: ${x.config.url} - ${new Date().getTime() - x.config.meta.requestStartedAt} ms`)
+  return x;
+})
+
 export const addToReservationDB = async (
   reservationId,
   parkingSpotId,
