@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import Landing from './Components/Pages/LandingPage/LandingPage';
@@ -16,39 +16,36 @@ import { auth, getUser } from "./firebase";
 
 
 function App() {
-  const [user] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const reroute = <Navigate replace to="/login" />;
+  const employeeReroute = <Navigate replace to="/" />;
   const [isEmployeeWorker, setIsEmployeeWorker] = useState(false);
-
-  let employeeReroute = <Navigate replace to="/login" />;
 
   useEffect(() => {
     const fetchEmployeeStatus = async () => {
+      if (loading) {
+        return;
+      }
       if (user) {
         const customer = await getUser(user.uid);
         const employeeOrUser = customer.isEmployee;
         setIsEmployeeWorker(employeeOrUser);
-
-        if (user && !isEmployeeWorker) {
-          employeeReroute = <Navigate replace to="/reservations" />;
-        }
       }
     };
     fetchEmployeeStatus();
-  }, [user, isEmployeeWorker]);
-
+  }, [user, loading, isEmployeeWorker]);
 
   return (
     // Routes for website
     // <Route path="/PAGELINK" element={<PAGE />} />
     <Router>
-      {!isEmployeeWorker ? <Navbar /> : <EmployeeNav />}
+      {(!isEmployeeWorker && user) || !user ? <Navbar /> : <EmployeeNav />}
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/reserve" element={user ? <Reserve /> : reroute} />
         <Route path="/reservations" element={user ? <View /> : reroute} />
-        <Route path="/employee/viewcheckin" element={isEmployeeWorker ? <ViewCheckIn /> : employeeReroute} />
+        <Route path="/employee/viewcheckin" element={user ? <ViewCheckIn isAnEmployee={isEmployeeWorker} /> : employeeReroute} />
         <Route path="*" element={<Navigate replace to="/" />} />
       </Routes>
     </Router>
