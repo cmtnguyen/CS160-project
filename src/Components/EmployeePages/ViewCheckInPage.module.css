@@ -8,3 +8,18 @@
 .rowBorder:nth-child(1){
     border-left: solid 3px var(--black);
 }
+
+@media only screen and (max-width: 1200px){
+    .title {
+        font-size: 1.5rem;
+    }
+    .content {
+        font-size: .75rem;
+    }
+}
+
+@media only screen and (max-width: 1000px){
+    .title {
+        font-size: 1rem;
+    }
+}

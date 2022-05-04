@@ -1,11 +1,41 @@
-import { Fragment } from "react";
-import { Link } from "react-router-dom";
+import { Fragment, useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./LandingPage.module.css";
+import { auth, getUser } from "../../../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { Row, Col, Button, Container } from "react-bootstrap";
 import Lot from "../../Assets/Lot.svg";
 import Phone from "../../Assets/phone.svg";
 
 const LandingPage = () => {
+  const [user, loading] = useAuthState(auth);
+  const [isEmployeeWorker, setIsEmployeeWorker] = useState(false);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    let cancel = false;
+
+    const fetchEmployeeStatus = async () => {
+      const customer = await getUser(user.uid);
+      setIsEmployeeWorker(customer.isEmployee);
+      if (isEmployeeWorker) {
+        navigate("/employee/viewcheckin");
+      }
+    };
+    if (loading) {
+      return;
+    }
+    if (user) {
+      if (cancel) return;
+      fetchEmployeeStatus();
+    }
+
+    return () => {
+      cancel = true;
+    };
+  }, [isEmployeeWorker, loading, navigate, user]);
+
   return (
     <Fragment>
       <Container fluid className="m-0 p-0">
