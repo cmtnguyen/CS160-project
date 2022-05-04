@@ -12,7 +12,7 @@ import {
   addToReservationDB,
   getReservationByRangeDate,
 } from "../../../../Services/reservationServices.js";
-import useSWR, { useSWRConfig } from "swr";
+import useSWR, { mutate } from "swr";
 
 //should prob move to new file later
 const ParkingSpot = ({ parkValue, isReserved, onClickHandler }) => {
@@ -38,10 +38,8 @@ const ReservationForm = (props) => {
   const [endDate, setEndDate] = useState(
     setHours(setMinutes(startDate, 0), startDate.getHours() + 1)
   );
-  // const [reservedDates, setReservedDates] = useState([]);
 
-  const { mutate } = useSWRConfig()
- const {data: reservedDates} = useSWR([startDate.toISOString().substring(0, 13) + ":00:00.000+00:00/", 
+  const {data: reservedDates} = useSWR([startDate.toISOString().substring(0, 13) + ":00:00.000+00:00/", 
     endDate.toISOString().substring(0, 13) + ":00:00.000+00:00"], 
     getReservationByRangeDate);
   // console.log(reservedDates)
@@ -78,17 +76,6 @@ const ReservationForm = (props) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
   };
-
-  // const fetchReservedReservations = async () => {
-  //   const reservedReservations = await getReservationByRangeDate(
-  //     startDate.toISOString().substring(0, 13) + ":00:00.000+00:00",
-  //     endDate.toISOString().substring(0, 13) + ":00:00.000+00:00"
-  //   );
-  //   const newReservedSpotIds = reservedReservations.map(
-  //     (reservation) => reservation.parkingSpotId
-  //   );
-  //   // setReservedDates(reservedSpotIds);
-  // };
 
   const user = auth.currentUser;
   const handleSubmit = (e) => {

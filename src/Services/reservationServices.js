@@ -8,13 +8,14 @@ const resByUserIdUrl = resUrl + "userId/";
 const resByDateUrl = resUrl + "date/";
 const resByParkingSpotUrl = resUrl + "parkingSpotId/";
 
-//prints execution times for requests
+//record request start time
 axios.interceptors.request.use( x => {
   x.meta = x.meta || {}
   x.meta.requestStartedAt = new Date().getTime();
   return x;
 })
 
+//print response time
 axios.interceptors.response.use(x => {
   console.log(`Execution time for: ${x.config.url} - ${new Date().getTime() - x.config.meta.requestStartedAt} ms`)
   return x;
@@ -50,8 +51,7 @@ export const getAllReservations = async () => {
   const user = auth.currentUser;
   const header = await createToken();
   try {
-    const res = await axios.get(resByUserIdUrl + user.uid, header);
-    return res.data;
+    return axios.get(resByUserIdUrl + user.uid, header).then(res => res.data)
   } catch (e) {
     console.error(e);
   }
