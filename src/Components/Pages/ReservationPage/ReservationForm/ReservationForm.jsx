@@ -10,6 +10,7 @@ import {
   addToReservationDB,
   getReservationByRangeDate,
 } from "../../../../Services/reservationServices.js";
+import useSWR, { mutate } from "swr";
 
 const { nanoid } = require("nanoid");
 const ParkingSpot = ({ parkValue, isReserved, onClickHandler }) => {
@@ -35,7 +36,12 @@ const ReservationForm = (props) => {
   const [endDate, setEndDate] = useState(
     setHours(setMinutes(startDate, 0), startDate.getHours() + 1)
   );
-  const [reservedDates, setReservedDates] = useState([]);
+
+  const {data: reservedDates} = useSWR([startDate.toISOString().substring(0, 13) + ":00:00.000+00:00/", 
+    endDate.toISOString().substring(0, 13) + ":00:00.000+00:00"], 
+    getReservationByRangeDate);
+  // console.log(reservedDates)
+
   const componentRef = useRef("null");
   const filterPassedTime = (time) => {
     const currentDate = new Date();
@@ -66,24 +72,11 @@ const ReservationForm = (props) => {
     setFormValues({ ...formValues, [name]: value });
   };
 
-  const fetchReservedReservations = async () => {
-    const reservedReservations = await getReservationByRangeDate(
-      startDate.toISOString().substring(0, 13) + ":00:00.000+00:00",
-      endDate.toISOString().substring(0, 13) + ":00:00.000+00:00"
-    );
-    const reservedSpotIds = reservedReservations.map(
-      (reservation) => reservation.parkingSpotId
-    );
-    setReservedDates(reservedSpotIds);
-  };
-
   const user = auth.currentUser;
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("1: ", formValues);
     const errors = validate(formValues);
     setFormErrors(errors);
-    console.log("2: ", formValues);
     if (Object.keys(errors).length === 0) {
       const reservationId = nanoid(6);
       const parkingSpotId = parkingSpot;
@@ -106,7 +99,9 @@ const ReservationForm = (props) => {
           time,
           isCheckedIn
         );
-        fetchReservedReservations();
+        // fetchReservedReservations();
+        mutate([startDate.toISOString().substring(0, 13) + ":00:00.000+00:00/", 
+        endDate.toISOString().substring(0, 13) + ":00:00.000+00:00"]);
       } catch (err) {
         console.error(err);
         alert(err.message);
@@ -116,10 +111,6 @@ const ReservationForm = (props) => {
     setIsSubmit(true);
   };
 
-  useEffect(() => {
-    fetchReservedReservations();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [startDate, endDate, isSubmit]);
 
   useEffect(() => {
     if (Object.keys(formErrors).length === 0 && isSubmit) {
@@ -252,7 +243,9 @@ const ReservationForm = (props) => {
                 <ParkingSpot
                   key={parkValue}
                   parkValue={parkValue}
-                  isReserved={reservedDates.includes(parkValue)}
+                  isReserved={reservedDates ? 
+                    (reservedDates.map((reservation) => reservation.parkingSpotId).includes(parkValue)) :
+                    false}
                   onClickHandler={onClickHandler}
                 />
               ))}
@@ -262,7 +255,9 @@ const ReservationForm = (props) => {
                 <ParkingSpot
                   key={parkValue}
                   parkValue={parkValue}
-                  isReserved={reservedDates.includes(parkValue)}
+                  isReserved={reservedDates ? 
+                    (reservedDates.map((reservation) => reservation.parkingSpotId).includes(parkValue)) :
+                    false}
                   onClickHandler={onClickHandler}
                 />
               ))}

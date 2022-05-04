@@ -9,6 +9,19 @@ const resByDateUrl = resUrl + "date/";
 const resByParkingSpotUrl = resUrl + "parkingSpotId/";
 const resByCheckedInUrl = resUrl + "checkedIn";
 
+//record request start time
+axios.interceptors.request.use( x => {
+  x.meta = x.meta || {}
+  x.meta.requestStartedAt = new Date().getTime();
+  return x;
+})
+
+//print response time
+axios.interceptors.response.use(x => {
+  console.log(`Execution time for: ${x.config.url} - ${new Date().getTime() - x.config.meta.requestStartedAt} ms`)
+  return x;
+})
+
 export const addToReservationDB = async (
   reservationId,
   parkingSpotId,
@@ -40,8 +53,7 @@ export const getAllReservations = async () => {
   const user = auth.currentUser;
   const header = await createToken();
   try {
-    const res = await axios.get(resByUserIdUrl + user.uid, header);
-    return res.data;
+    return axios.get(resByUserIdUrl + user.uid, header).then(res => res.data)
   } catch (e) {
     console.error(e);
   }
@@ -60,11 +72,7 @@ export const getReservationByDate = async (date) => {
 export const getReservationByRangeDate = async (startDate, endDate) => {
   const header = await createToken();
   try {
-    const res = await axios.get(
-      resByDateUrl + startDate + "/" + endDate,
-      header
-    );
-    return res.data;
+    return axios.get(resByDateUrl + startDate + endDate, header).then(res => res.data)
   } catch (e) {
     console.error(e);
   }
