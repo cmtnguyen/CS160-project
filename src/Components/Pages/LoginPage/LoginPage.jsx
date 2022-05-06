@@ -3,8 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { auth, signInWithGoogle } from "../../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import styles from "./LoginPage.module.css";
+
 function Login() {
   const [user, loading] = useAuthState(auth);
+
   const navigate = useNavigate();
   useEffect(() => {
     if (loading) {
@@ -13,6 +15,7 @@ function Login() {
     }
     if (user) navigate("/reservations");
   }, [user, loading, navigate]);
+
   return (
     <Fragment>
       <div className={styles.login}>

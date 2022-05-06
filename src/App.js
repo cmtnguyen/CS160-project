@@ -16,12 +16,16 @@ import { auth, getUser } from "./firebase";
 
 
 function App() {
-  const [user] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const reroute = <Navigate replace to="/login" />;
+  const employeeReroute = <Navigate replace to="/" />;
   const [isEmployeeWorker, setIsEmployeeWorker] = useState(false);
 
   useEffect(() => {
     const fetchEmployeeStatus = async () => {
+      if (loading) {
+        return;
+      }
       if (user) {
         const customer = await getUser(user.uid);
         const employeeOrUser = customer.isEmployee;
@@ -29,12 +33,7 @@ function App() {
       }
     };
     fetchEmployeeStatus();
-  }, [user]);
-
-  let employeeReroute = <Navigate replace to="/login" />;
-  if (user) {
-    employeeReroute = <Navigate replace to="/reservations" />;
-  }
+  }, [user, loading, isEmployeeWorker]);
 
   return (
     // Routes for website
@@ -46,7 +45,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/reserve" element={user ? <Reserve /> : reroute} />
         <Route path="/reservations" element={user ? <View /> : reroute} />
-        <Route path="/employee/viewcheckin" element={isEmployeeWorker ? <ViewCheckIn /> : employeeReroute} />
+        <Route path="/employee/viewcheckin" element={user ? <ViewCheckIn isAnEmployee={isEmployeeWorker} /> : employeeReroute} />
         <Route path="*" element={<Navigate replace to="/" />} />
       </Routes>
     </Router>
