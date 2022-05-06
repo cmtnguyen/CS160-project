@@ -16,6 +16,7 @@ import {
   getTimeRange,
 } from "../../../Services/dateTimeServices.js";
 import styles from "./ViewPage.module.css";
+import useSWR, { mutate } from "swr";
 
 const Reservation = ({ reservation, onCancel, onCheckIn, onCheckOut }) => {
   const [show, setShow] = useState(true);
@@ -86,26 +87,23 @@ const Reservation = ({ reservation, onCancel, onCheckIn, onCheckOut }) => {
 
 const ViewPage = () => {
   const [user] = useAuthState(auth);
-  const [reservations, setReservations] = useState();
+  const {data: reservations} = useSWR(["getAllReservationsEndpoint"], getAllReservations);
 
+  //update reservations when new user
   useEffect(() => {
-    const fetchReservations = async () => {
-      const fetchedReservations = await getAllReservations();
-      const currentDate = new Date();
-      // filtering reservations to exclude those past departure date
-      const filteredReservations = (fetchedReservations || []).filter(function (
-        reservation
-      ) {
-        const departureTime = new Date(reservation.reservationDate);
-        departureTime.setTime(
-          departureTime.getTime() + reservation.time * 60 * 60 * 1000
-        ); // adds however many hours they reserved to get departure time
-        return departureTime.getTime() > currentDate.getTime();
-      });
-      setReservations(filteredReservations);
-    };
-    fetchReservations();
-  }, [user]);
+    mutate(["getAllReservationsEndpoint"]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user])
+
+  // filtering reservations to exclude those past departure date
+  const filteredReservations = (reservation) => {
+    const currentDate = new Date();
+    const departureTime = new Date(reservation.reservationDate);
+    departureTime.setTime(
+      departureTime.getTime() + reservation.time * 60 * 60 * 1000
+    ); // adds however many hours they reserved to get departure time
+    return departureTime.getTime() > currentDate.getTime();
+  };
 
   const checkInHandler = async (id) => {
     const newReservations = [...reservations];
@@ -120,14 +118,14 @@ const ViewPage = () => {
       } else if (prevReservation && prevReservation.isCheckedIn) {
         currReservation.invalidCheckIn = true;
       } else {
-        checkIntoReservation(id);
+        await checkIntoReservation(id);
         currReservation.isCheckedIn = true;
       }
     } catch (err) {
       console.error(err);
       alert(err.message);
     }
-    setReservations(newReservations);
+    mutate(["getAllReservationsEndpoint"])
   };
 
   const [showCheckedOut, setShowCheckedOut] = useState(false);
@@ -144,21 +142,17 @@ const ViewPage = () => {
       alert(err.message);
     }
     setShowCheckedOut(true);
-    setReservations(newReservations);
+    mutate(["getAllReservationsEndpoint"])
   };
 
   const cancelHandler = (id) => {
-    const newList = reservations.filter(
-      (reservation) => reservation.reservationId !== id
-    );
-    //console.log(id);
     try {
       cancelReservation(id);
     } catch (err) {
       console.error(err);
       alert(err.message);
     }
-    setReservations(newList);
+    mutate(["getAllReservationsEndpoint"])
   };
 
   return (
@@ -181,7 +175,7 @@ const ViewPage = () => {
       {reservations && (
         <Container className={styles.checkAlign}>
           <div>
-            {reservations.map((reservation) => (
+            {reservations.filter(filteredReservations).map((reservation) => (
               <Reservation
                 key={reservation.reservationId}
                 reservation={reservation}
