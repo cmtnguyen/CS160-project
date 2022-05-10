@@ -37,7 +37,7 @@ const Reservation = ({ reservation, onCancel, onCheckIn, onCheckOut }) => {
       )}
       {reservation.invalidCheckIn && !reservation.isCheckedIn && (
         <Alert className="mt-2" variant="danger">
-          Sorry! The person before you has not checked out yet or it is too early to check in. Please try again
+          Sorry! The person before you has not checked out yet. Please try again
           later.
         </Alert>
       )}
@@ -107,19 +107,18 @@ const ViewPage = () => {
 
   const checkInHandler = async (id) => {
     const newReservations = [...reservations];
-    let currDate = new Date();
+
     try {
       const prevReservation = await getPrevReservation(id);
-      const currReservation = newReservations.find(
-        (reservation) => reservation.reservationId === id
-      );
-      if (currDate.getTime() < new Date(currReservation.reservationDate).getTime() - 600000) {
-        currReservation.invalidCheckIn = true;
-      } else if (prevReservation && prevReservation.isCheckedIn) {
-        currReservation.invalidCheckIn = true;
+      if (prevReservation && prevReservation.isCheckedIn) {
+        newReservations.find(
+          (reservation) => reservation.reservationId === id
+        ).invalidCheckIn = true;
       } else {
         await checkIntoReservation(id);
-        currReservation.isCheckedIn = true;
+        newReservations.find(
+          (reservation) => reservation.reservationId === id
+        ).isCheckedIn = true;
       }
     } catch (err) {
       console.error(err);
