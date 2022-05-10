@@ -121,7 +121,7 @@ const ViewPage = () => {
       } else if (prevReservation && prevReservation.isCheckedIn) {
         currReservation.invalidCheckIn = true;
       } else {
-        checkIntoReservation(id);
+        await checkIntoReservation(id);
       }
     } catch (err) {
       console.error(err);
